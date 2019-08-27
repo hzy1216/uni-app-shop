@@ -176,7 +176,7 @@
 	/* 地址列表 */
 	.address-list{
 		width: 100%;
-		height: 95%;
+		height:93%;
 	}
 		.address-box{
 			width: 100%;
