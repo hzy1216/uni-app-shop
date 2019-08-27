@@ -1,0 +1,118 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index",
+			"style": {
+				"navigationBarTitleText": "myshop"
+			}
+		}
+			,{
+				    "path" : "pages/classify",
+				    "style" : {
+							"navigationBarTitleText": "分类"
+						}
+				}
+				,{
+				    "path" : "pages/cart",
+				    "style" : {
+							"navigationBarTitleText": "购物车"
+						}
+				}
+				,{
+				    "path" : "pages/user",
+				    "style" : {
+							"navigationBarTitleText": "个人中心"
+						}
+				},
+				{
+				    "path" : "pages/shopsetting",
+				    "style" : {
+							"navigationBarTitleText": "设置"
+						}
+				},
+				{
+				    "path" : "components/detail",
+				    "style" : {
+							"navigationBarTitleText": "商品详情"
+						}
+				},
+				
+				{
+				    "path" : "components/address",
+				    "style" : {
+							"navigationBarTitleText": "收货地址"
+						}
+				},
+				
+				
+				{
+				    "path" : "components/add",
+				    "style" : {
+							"navigationBarTitleText": "新增收货地址"
+						}
+				},
+				{
+				    "path" : "components/mymap",
+				    "style" : {
+							"navigationBarTitleText": "选择位置"
+						}
+				},
+				{
+				    "path" : "pages/login",
+				    "style" : {
+							"navigationBarTitleText": "登录"
+						}
+				},
+				{
+				    "path" : "pages/register",
+				    "style" : {
+							"navigationBarTitleText": "注册"
+						}
+				},
+				{
+				    "path" : "components/shoplist",
+				    "style" : {
+							"navigationBarTitleText": "商品列表"
+						}
+				}
+				
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8",
+		"navigationStyle":"custom"
+	},
+	"tabBar": {
+		
+		"backgroundColor": "#FFFFFF",
+		"color": "#707070",
+		"selectedColor": "#fa436a",
+		"list": [{
+				"pagePath": "pages/index",
+				"iconPath": "static/images/tab-home.png",
+				"selectedIconPath": "static/images/tab-home-current.png",
+				"text": "首页"
+			},
+			{
+				"pagePath": "pages/classify",
+				"iconPath": "static/images/tab-cate.png",
+				"selectedIconPath": "static/images/tab-cate-current.png",
+				"text": "分类"
+			},
+			{
+				"pagePath": "pages/cart",
+				"iconPath": "static/images/tab-cart.png",
+				"selectedIconPath": "static/images/tab-cart-current.png",
+				"text": "购物车"
+			},
+			{
+				"pagePath": "pages/user",
+				"iconPath": "static/images/tab-my.png",
+				"selectedIconPath": "static/images/tab-my-current.png",
+				"text": "我的"
+			}
+		]
+	}
+}
