@@ -34,7 +34,16 @@
 					<image src="../static/images/youjiantou.png" mode="" class="home-swiper-top-t"></image>
 				</view>
 				<!-- 列表 -->
-				<list></list>
+				<view class="list">					
+						<navigator url="../components/detail" class="list-url" v-for="item in homeList" :key="item.id">
+							<image :src="item.image" mode="" class="list-img"></image>
+							<text class="list-title">{{item.title}}</text>
+							<view class="list-text-box">
+								<text class="list-price">&#165;{{item.price}}</text>
+							</view>				
+						</navigator>
+						
+				</view>
 		</scroll-view>
 	</view>
 	
@@ -45,25 +54,24 @@
 	import swiperbanner from '../components/swiperbanner'
 	import homenav from '../components/homenav.vue'
 	import swiperlist from '../components/swiperlist.vue'
-	import list from '../components/list.vue'
+	import Home from '../static/data/home.js'
 	export default {
 		data() {
 			return {
+				homeList:Home.homeList
 				
 			}
 		},
 		components:{
-			topnav,swiperbanner,homenav,swiperlist,list
+			topnav,swiperbanner,homenav,swiperlist,
 		},
-		onLoad() {
-
-		},
-		methods: {
-    }
+		methods:{
+		
+		}
 	}
 </script>
 
-<style>
+<style scoped>
 	.home {
 		width: 100%;
 		height: 100%;
@@ -132,4 +140,9 @@
 					font-size: 30upx;
 					color: red;
 				}
+				
+				
+		.list-url:nth-last-child(1){
+			margin-bottom: 100upx;
+		}
 </style>

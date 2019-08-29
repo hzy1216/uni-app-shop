@@ -1,13 +1,12 @@
 <template>
 	<view class="list">
-			<navigator url="../components/detail" class="list-url">
+			<!-- <navigator url="../components/detail" class="list-url">
 				<image src="../static/images/temp/cate7.jpg" mode="" class="list-img"></image>
 				<text class="list-title">没考好科技网</text>
 				<view class="list-text-box">
 					<text class="list-price">&#165;35</text>
 					<text class="list-ysnum">已售 16件</text>
-				</view>
-				
+				</view>				
 			</navigator>
 			<navigator url="" class="list-url">
 				<image src="../static/images/temp/cate8.jpg" mode="" class="list-img"></image>
@@ -48,67 +47,40 @@
 					<text class="list-price">&#165;35</text>
 					<text class="list-ysnum">已售 16件</text>
 				</view>
+			</navigator> -->
+			
+			
+			<navigator url="../components/detail" class="list-url" v-for="item in goodsList" :key="item.id">
+				<image :src="item.image" mode="" class="list-img"></image>
+				<text class="list-title">{{item.title}}</text>
+				<view class="list-text-box">
+					<text class="list-price">&#165; {{item.price}}</text>
+					<text class="list-ysnum">已售 {{item.number}}件</text>
+				</view>				
 			</navigator>
+			
 	</view>
 </template>
 
 <script>
+
+	import goodsList from '../static/data/goodsList.js'
+	
 	export default {
 		data() {
 			return {
-				
-			};
+				goodsList:goodsList.goodsListone
+				}
+		},
+		methods:{
+			
+		},
+		mounted() {
+			
 		}
 	}
 </script>
 
-<style scoped>
-	.list{
-		width: 100%;
-		display: flex;
-		flex-wrap: wrap;
-		margin-bottom: 60upx;
-		
-	}
-		.list-url{
-			width: 40%;
-			height: 400upx;
-			margin-left: 5%;
-			display: flex;
-			margin-top: 50upx;
-			flex-direction: column;
-		
-			background-color: #FFFFFF;
-		}
-			.list-img{
-				width: 100%;
-				height: 300upx;
-			}
-				.list-title{
-					width: 100%;
-					height: 80upx;
-					overflow: hidden; 
-					display: block; 
-					text-overflow: ellipsis;
-					white-space: nowrap;
-					cursor: pointer;
-					line-height: 80upx;
-					font-size: 34upx;
-				}
-				.list-text-box{
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-						height: 50upx;
-						width: 100%;
-				}
-				.list-price{
-					
-					font-size: 30upx;
-				}
-				.list-ysnum{
-				
-					font-size: 24upx;
-					
-				}
+<style>
+	
 </style>

@@ -51,6 +51,54 @@ export default {
 				/* margin-right: 40%; */
 			}
 		
-		
+		/* 列表 */
+		.list{
+			width: 100%;
+			display: flex;
+			flex-wrap: wrap;
+			margin-bottom: 60upx;
+			
+		}
+			.list-url{
+				width: 43%;
+				height: 400upx;
+				margin-left: 5%;
+				display: flex;
+				margin-top: 50upx;
+				flex-direction: column;
+			
+				background-color: #FFFFFF;
+			}
+				.list-img{
+					width: 100%;
+					height: 300upx;
+				}
+					.list-title{
+						width: 100%;
+						height: 80upx;
+						overflow: hidden; 
+						display: block; 
+						text-overflow: ellipsis;
+						white-space: nowrap;
+						cursor: pointer;
+						line-height: 80upx;
+						font-size: 34upx;
+					}
+					.list-text-box{
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+							height: 50upx;
+							width: 100%;
+					}
+					.list-price{
+						
+						font-size: 30upx;
+					}
+					.list-ysnum{
+					
+						font-size: 24upx;
+						
+					}
 	
 </style>
