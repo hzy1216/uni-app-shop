@@ -5,7 +5,7 @@
 			</view>
 			<view class="classify-list">
 					<scroll-view scroll-y class="classify-list-left">
-<!-- 						<navigator url="" class="classify-list-left-a" @click="getmybox('#classify-one')">手机数码</navigator>
+						<!-- <navigator url="" class="classify-list-left-a" @click="getmybox('#classify-one')">手机数码</navigator>
 						<navigator url="" class="classify-list-left-a">礼品鲜花</navigator>
 						<navigator url="" class="classify-list-left-a">男装女装</navigator>
 						<navigator url="" class="classify-list-left-a">母婴用品</navigator> -->
@@ -19,92 +19,46 @@
 						<view class="classify-list-r-box" id="classify-one">
 								<text class="classify-list-right-title">手机通讯</text>
 								<view class="classify-list-right-list">
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate2.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">全面屏手机</text>
-									</navigator>
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate1.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">游戏手机</text>
-									</navigator>
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate3.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">老人机</text>
-									</navigator>
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate5.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">拍照手机</text>
-									</navigator>
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate4.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">女性手机</text>
-									</navigator>
+									<view url="../components/shoplist" class="classify-list-right-a" v-for=" oneitem in onefloor" :key="oneitem.id" @click="classdetail(oneitem.id,one)">
+										<image :src="oneitem.img" mode="" class="classify-list-right-img">
+											
+										</image>
+										<text class="classify-list-right-text">{{oneitem.title}}</text>
+									</view>
+									
 								</view>
 						</view>
 						<!-- 二楼 -->
 						<view class="classify-list-r-box" id="classify-two">
 								<text class="classify-list-right-title">礼品鲜花</text>
 								<view class="classify-list-right-list">
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate8.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">创意礼品</text>
-									</navigator>
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate7.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">工艺摆件</text>
-									</navigator>
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate12.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">鲜花</text>
-									</navigator>
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate10.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">卡通花束</text>
-									</navigator>
+									<view url="../components/shoplist" class="classify-list-right-a" v-for=" twoitem in twofloor" :key="twoitem.id" @click="classdetail(twoitem.id,two)">
+										<image :src="twoitem.img" mode="" class="classify-list-right-img"></image>
+										<text class="classify-list-right-text">{{twoitem.title}}</text>
+									</view>
+									
 								</view>
 						</view>
 						<!-- 三楼 -->
 						<view class="classify-list-r-box" id="classify-three">
 								<text class="classify-list-right-title">男装女装</text>
 								<view class="classify-list-right-list">
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate13.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">男士T恤</text>
-									</navigator>
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate14.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">男士外套</text>
-									</navigator>
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate16.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">女上装</text>
-									</navigator>
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate15.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">女下装</text>
-									</navigator>
+									<view url="../components/shoplist" class="classify-list-right-a" v-for=" threeitem in threefloor" :key="threeitem.id" @click="classdetail(threeitem.id,three)">
+										<image :src="threeitem.img" mode="" class="classify-list-right-img"></image>
+										<text class="classify-list-right-text">{{threeitem.title}}</text>
+									</view>
+									
 								</view>
 						</view>
 						<!-- 四楼 -->
 						<view class="classify-list-r-box" id="classify-four">
 								<text class="classify-list-right-title">母婴用品</text>
 								<view class="classify-list-right-list">
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate17.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">奶粉</text>
-									</navigator>
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate19.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">童装</text>
-									</navigator>
-									<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate21.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">儿童餐具</text>
-									</navigator>
-										<navigator url="../components/shoplist" class="classify-list-right-a">
-										<image src="../static/images/temp/cate21.jpg" mode="" class="classify-list-right-img"></image>
-										<text class="classify-list-right-text">儿童餐具</text>
-									</navigator>
+									<view url="../components/shoplist" class="classify-list-right-a" v-for=" fouritem in fourfloor" :key="fouritem.id" @click="classdetail(fouritem.id,four)">
+										<image :src="fouritem.img" mode="" class="classify-list-right-img"></image>
+										<text class="classify-list-right-text">{{fouritem.title}}</text>
+									</view>
+									
 								</view>
 						</view>
 					</scroll-view>
@@ -113,9 +67,28 @@
 </template>
 
 <script>
+	import floor from '../static/data/class.js'
 		export default{
-			
+			data() {
+				return {				
+						onefloor:floor.onefloor,
+						twofloor:floor.twofloor,
+						threefloor:floor.threefloor,
+						fourfloor:floor.fourfloor,
+						one:"one",
+						two:"two",
+						three:"three",
+						four:"four"
+				};
+			},
 			methods:{
+					classdetail(id,option){
+				// 向detail页面传递数据 
+				
+					uni.navigateTo({
+						url:`../components/shoplist?id=${id}&data=${encodeURIComponent(option)}`,
+					})
+				}
 				
 			}
 		}

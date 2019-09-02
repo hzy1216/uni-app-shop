@@ -11,13 +11,13 @@
 			<!-- banner轮播图 -->
 			<swiper autoplay="true" class="detail-swiper">
 				<swiper-item class="detail-item">
-						<image src="https://gd3.alicdn.com/imgextra/i3/0/O1CN01IiyFQI1UGShoFKt1O_!!0-item_pic.jpg_400x400.jpg" mode="" class="detail-item-img"></image>
+						<image :src="detail.image" mode="" class="detail-item-img"></image>
 				</swiper-item>
 				<swiper-item class="detail-item">
-						<image src="https://gd3.alicdn.com/imgextra/i3/TB1RPFPPFXXXXcNXpXXXXXXXXXX_!!0-item_pic.jpg_400x400.jpg" mode="" class="detail-item-img"></image>
+						<image :src="detail.image2" mode="" class="detail-item-img"></image>
 				</swiper-item>
 				<swiper-item class="detail-item">
-						<image src="https://gd2.alicdn.com/imgextra/i2/38832490/O1CN01IYq7gu1UGShvbEFnd_!!38832490.jpg_400x400.jpg" mode="" class="detail-item-img"></image>
+						<image :src="detail.image3" mode="" class="detail-item-img"></image>
 				</swiper-item>
 				
 			</swiper>
@@ -25,16 +25,16 @@
 			<!-- 商品介绍 -->
 			<view class="detail-shop">
 				<view class="detail-shop-one">
-					<text class="detail-shop-one-one">恒源祥2019春季长袖白色t恤 新款春装</text>
+					<text class="detail-shop-one-one">{{detail.title}}</text>
 					<view class="detail-shop-one-two">
-						<text class="detail-new">&#165;350</text>
-						<text class="detail-old">&#165;400</text>
-						<text class="detail-dis">8折</text>
+						<text class="detail-new">&#165;{{detail.price}}</text>
+						<text class="detail-old">&#165;{{(detail.price/zk).toFixed(2)}}</text>
+						<text class="detail-dis">{{zk}}折</text>
 					</view>
 					<view class="detail-shop-one-three">
-						<text class="detail-xl">销量：745</text>
-						<text class="detail-kc">库存：760</text>
-						<text class="detail-lll">浏览量：1357</text>
+						<text class="detail-xl">销量：{{detail.number}}</text>
+						<text class="detail-kc">库存：{{detail.number+detail.number*3}}</text>
+						<text class="detail-lll">浏览量：{{detail.number*30}}</text>
 					</view>
 				</view>
 				
@@ -108,11 +108,11 @@
 		<view class="detail-images">
 			<view class="detail-images-title">图文详情</view>
 			<view class="detail-images-box">
-				<image src="https://gd3.alicdn.com/imgextra/i4/479184430/O1CN01nCpuLc1iaz4bcSN17_!!479184430.jpg_400x400.jpg" mode="" class="detail-images-img"></image>
-				<image src="https://gd2.alicdn.com/imgextra/i2/479184430/O1CN01gwbN931iaz4TzqzmG_!!479184430.jpg_400x400.jpg" mode="" class="detail-images-img"></image>
-				<image src="https://gd3.alicdn.com/imgextra/i3/479184430/O1CN018wVjQh1iaz4aupv1A_!!479184430.jpg_400x400.jpg" mode="" class="detail-images-img"></image>
-				<image src="https://gd4.alicdn.com/imgextra/i4/479184430/O1CN01tWg4Us1iaz4auqelt_!!479184430.jpg_400x400.jpg" mode="" class="detail-images-img"></image>
-					<image src="https://gd1.alicdn.com/imgextra/i1/479184430/O1CN01Tnm1rU1iaz4aVKcwP_!!479184430.jpg_400x400.jpg" mode="" class="detail-images-img"></image>
+				<image :src="detail.image3" mode="" class="detail-images-img"></image>
+				<image :src="detail.image" mode="" class="detail-images-img"></image>
+				<image :src="detail.image2" mode="" class="detail-images-img"></image>
+				<image :src="detail.image3" mode="" class="detail-images-img"></image>
+					<image :src="detail.image2" mode="" class="detail-images-img"></image>
 				
 			</view>
 		</view>
@@ -132,8 +132,8 @@
 				</navigator>
 				<view class="detail-bott-left-a">
 					<view class="detail-bott-box">
-						<image src="../static/images/shoucang.png" mode="" class="detail-left-img-l"></image>
-						<image src="../static/images/shoucang%202.png" mode="" class="detail-left-img-l" v-show="false"></image>
+						<image src="../static/images/shoucang.png" mode="" class="detail-left-img-l"	@click="ai()" v-show="aione"></image>
+						<image src="../static/images/shoucang%202.png" mode="" class="detail-left-img-l" @click="xin()" v-show="aitwo" ></image>
 					</view>
 					
 					<text class="detail-left-title">收藏</text>
@@ -143,9 +143,9 @@
 				<text class="detail-right-ljgm">
 					立即购买
 				</text>
-				<text class="detail-right-jrgwc">
+				<view class="detail-right-jrgwc" @click="add(detail)">
 					加入购物车
-				</text>
+				</view>
 			</view>
 		</view>
 		
@@ -155,13 +155,25 @@
 </template>
 
 <script>
+	
 	export default {
 		data() {
 			return {
-				
+				aione:true,
+				aitwo:false,
+				detail:null,
+				zk:(Math.random(1)).toFixed(2),
+				cartlist:''
 			};
 		},
+		// 从首页或列表页接受到的数据
+		onLoad(option) {
+			console.log(option.data)
+			const item = JSON.parse(decodeURIComponent(option.data));
+			this.detail = item;
+		},
 		methods:{
+			
 			 shoplistclick(){			 				
 						uni.switchTab({
 								url: '../pages/index'
@@ -180,8 +192,23 @@
 				  uni.switchTab({
 				 			url: '../pages/index'
 				 });
-			 }
-		}
+			 },
+			 add(option){
+					let data = JSON.stringify(option)
+					this.cartlist = data ;
+					
+			 },
+			ai(){
+				this.aione = false ;
+				this.aitwo = true ;
+			},
+			xin(){
+				this.aione = true ;
+				this.aitwo = false ;
+			}
+			
+		},
+		
 	}
 </script>
 <style>
@@ -321,12 +348,12 @@
 					.detail-dis{
 						color: #FFFFFF;
 						background-color: #ff4374;
-						width: 60upx;
-						height: 40upx;
+						width: 100upx;
+						height: 50upx;
 						text-align: center;
 						font-size: 24upx;
-						margin-top: 10upx;
-						line-height: 40upx;
+						margin-top: 5upx;
+						line-height: 50upx;
 						text-align: center;
 					}
 			.detail-shop-one-three{

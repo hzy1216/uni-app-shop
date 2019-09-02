@@ -35,13 +35,13 @@
 				</view>
 				<!-- 列表 -->
 				<view class="list">					
-						<navigator url="../components/detail" class="list-url" v-for="item in homeList" :key="item.id">
+						<view class="list-url" v-for="item in homeList" :key="item.id"  @click="todetail(item.id,item)">
 							<image :src="item.image" mode="" class="list-img"></image>
 							<text class="list-title">{{item.title}}</text>
 							<view class="list-text-box">
 								<text class="list-price">&#165;{{item.price}}</text>
 							</view>				
-						</navigator>
+						</view>
 						
 				</view>
 		</scroll-view>
@@ -58,15 +58,20 @@
 	export default {
 		data() {
 			return {
-				homeList:Home.homeList
-				
+				homeList:Home.homeList,
 			}
 		},
 		components:{
 			topnav,swiperbanner,homenav,swiperlist,
 		},
 		methods:{
-		
+			todetail(id,option){
+			// 向detail页面传递数据
+				let data = JSON.stringify(option) 
+				uni.navigateTo({
+					url:`../components/detail?id=${id}&data=${encodeURIComponent(data)}`,
+				})
+			}
 		}
 	}
 </script>

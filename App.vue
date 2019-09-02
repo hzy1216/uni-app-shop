@@ -1,3 +1,4 @@
+
 <script>
 export default {
 	onLaunch: function() {
@@ -60,9 +61,10 @@ export default {
 			
 		}
 			.list-url{
-				width: 43%;
-				height: 400upx;
-				margin-left: 5%;
+				width:320upx;
+
+				height: 440upx;
+				margin-left: 36upx;
 				display: flex;
 				margin-top: 50upx;
 				flex-direction: column;
@@ -71,7 +73,7 @@ export default {
 			}
 				.list-img{
 					width: 100%;
-					height: 300upx;
+					height: 340upx;
 				}
 					.list-title{
 						width: 100%;

@@ -10,9 +10,9 @@
 		<!-- tab切换 -->
 		<view class="tab">
 			<view class="tab-left">
-				<text class="tab-left-title title-bott">综合排序</text>
-				<text class="tab-left-title">销量优先</text>
-				<view class="tab-left-title title-sx">
+				<text class="tab-left-title" @click="clickTopUp(0)" :class='{active:0 ==faceValue}'>综合排序</text>
+				<text class="tab-left-title" @click="clickTopUp(1)" :class='{active:1 ==faceValue}'>销量优先</text>
+				<view class="tab-left-title title-sx" @click="clickTopUp(2)" :class='{active:2==faceValue}'>
 					<text>价格</text>
 					<view class="tab-left-box">
 						<image src="../static/images/shangjiantou.png" mode="" class="tab-left-title-img"></image>
@@ -22,32 +22,23 @@
 					
 				</view>
 			</view>
-			<view class="tab-right">
+			<view class="tab-right" @click="showtitle()">
 				<image src="../static/images/fenlei.png" mode="" class="tab-right-img"></image>
 			</view>
 		</view>
 		
 		<!-- 弹出的选项 -->
-		<view class="tab-click" v-show="false">
+		<view class="tab-click" v-show="tabtitle" >
+			<view class="tab-click-left" @click="tabclick()">
+				
+			</view>
 			<scroll-view scroll-y class="tab-click-box">
 				<view class="tab-click-box-nav">
 					<view class="tab-click-title">
-						<text>手机通讯</text>
+						<text>{{tabhead}}</text>
 					</view>
-					<view class="tab-click-two">
-						<text>全面屏手机</text>
-					</view>
-					<view class="tab-click-two">
-						<text>游戏手机</text>
-					</view>
-					<view class="tab-click-two">
-						<text>老年手机</text>
-					</view>
-					<view class="tab-click-two">
-						<text>拍照手机</text>
-					</view>
-					<view class="tab-click-two">
-						<text>女性手机</text>
+					<view class="tab-click-two"  v-for="item in shoptitle" :key="item.id" @click="tablistclick(item.id)">
+						<text>{{item.title}}</text>
 					</view>
 				</view>
 			</scroll-view>
@@ -58,7 +49,16 @@
 		<!-- 商品列表 -->
 		
 		<scroll-view scroll-y="true" style="height: 85%">
-			<mylist></mylist>
+			<view class="list">		
+					<view  class="list-url" v-for="item in shoplist" :key="item.id" @click="shopdetail(item.id,item)">
+						<image :src="item.image" mode="" class="list-img"></image>
+						<text class="list-title">{{item.title}}</text>
+						<view class="list-text-box">
+							<text class="list-price">&#165; {{item.price}}</text>
+							<text class="list-ysnum">已售 {{item.number}}件</text>
+						</view>				
+					</view>		
+			</view>
 		</scroll-view>
 		
 		
@@ -66,22 +66,103 @@
 </template>
 
 <script>
-	import mylist from '../components/list.vue'
+	import listData from '../static/data/goodsList.js' 
 	export default {
-		data() {
-			return {
-				
-			};
+		data(){
+			return{
+				tabhead:null,
+				tabtitle:false,
+				faceValue: "0",
+				id:null,
+				type:null,
+				shoplist:null,
+				shoptitle:null
+			}
 		},
-		components:{
-			mylist
+	
+		onLoad(option) {
+		
+			const oid = decodeURIComponent(option.id)
+			const item = decodeURIComponent(option.data);
+			this.type = item;
+			this.id = oid;
+			if( this.type == "one"){
+				this.shoplist = listData.goodsListone[this.id - 1 ]
+				this.shoptitle = listData.goodtitle[0] 
+				this.tabhead = '手机通讯'
+				 
+			}
+			if( this.type == "two"){
+				this.shoplist = listData.goodsListtwo[this.id - 1 ]
+				this.shoptitle = listData.goodtitle[1]
+				this.tabhead = '礼品鲜花'
+
+			}
+			if( this.type == "three"){
+				this.shoplist = listData.goodsListthree[this.id - 1 ]
+				this.shoptitle = listData.goodtitle[2]
+				this.tabhead = '男装女装'
+
+			}
+			if( this.type == "four"){
+				this.shoplist = listData.goodsListfour[this.id - 1 ]
+				this.shoptitle = listData.goodtitle[3]
+				this.tabhead = '母婴用品'
+
+			}
+			
+			
 		},
 		methods:{
 			 shoplistclick(){			 				
 						uni.switchTab({
 								url: '../pages/classify'
 					});
-			 }
+			 },
+			 shopdetail(id,option){
+				 let data = JSON.stringify(option) 
+				 uni.navigateTo({
+				 	url:`../components/detail?id=${id}&data=${encodeURIComponent(data)}`,
+				 })
+			 },
+			 showtitle(){
+				 this.tabtitle = true ;
+			 },
+			 tabclick(){
+				 this.tabtitle = false ;
+
+			 },
+			tablistclick(oid){
+			
+				this.tabtitle = false ;
+				if( this.type == "one"){
+					this.shoplist = listData.goodsListone[oid - 1 ]
+					this.shoptitle = listData.goodtitle[0] 
+					this.tabhead = '手机通讯'
+					 
+				}
+				if( this.type == "two"){
+					this.shoplist = listData.goodsListtwo[oid - 1 ]
+					this.shoptitle = listData.goodtitle[1]
+					this.tabhead = '礼品鲜花'
+				
+				}
+				if( this.type == "three"){
+					this.shoplist = listData.goodsListthree[oid - 1 ]
+					this.shoptitle = listData.goodtitle[2]
+					this.tabhead = '男装女装'
+				
+				}
+				if( this.type == "four"){
+					this.shoplist = listData.goodsListfour[oid - 1 ]
+					this.shoptitle = listData.goodtitle[3]
+					this.tabhead = '母婴用品'
+				
+				}
+			},
+			clickTopUp:function(id){
+        this.faceValue = id;
+      }
 		}
 	}
 </script>
@@ -126,7 +207,7 @@
 				justify-content: center;
 				align-items: center;
 			}
-			.title-bott{
+			.active{
 				border-bottom: 2px #fd5085 solid;
 			}
 			.tab-left-box{
@@ -170,6 +251,11 @@
 			background-color: rgba(153,153,153,0.5);
 			z-index: 5;
 		}
+				.tab-click-left{
+					width: 30%;
+					height: 100%;
+					float: left;
+				}
 				.tab-click-box{
 					width: 70%;
 					height: 100%;
@@ -197,6 +283,6 @@
 						font-size: 32upx;
 						background-color: #FFFFFF;
 						border-bottom: 1px #CCCCCC solid;
-
+						color: #6a6a6a;
 					}
 </style>

@@ -10,24 +10,26 @@
 		<!-- 搜索栏 -->
 		 <view class="mymap-seach">
 				<view class="mymap-seach-one" >
-					<view class="mymap-seach-click">
+					<view class="mymap-seach-click" @click="seachclick()" v-show="seachone">
 						<image src="../static/images/41.png" mode="" class="mymap-seach-click-img"></image>
 						<text class="mymap-seach-click-text">搜索地点</text>
 					</view>			
 				</view>
-				<view class="mymap-seach-two" v-show="false">
+				<view class="mymap-seach-two" v-show="seach">
 					<image src="../static/images/41.png" mode="" class="mymap-seach-click-img fdj"></image>
 					<input type="text" value="" placeholder="搜索地点" class="mymap-seach-two-input"/>
 					<image src="../static/images/cc.png" mode="" class="mymap-seach-click-img dcd" v-show="false"></image>
-					<text class="mymap-seach-two-text">取消</text>
+					<text class="mymap-seach-two-text" @click="seachtwo()">取消</text>
 				</view>
 		 </view>
 		 
 		 <!-- 地图 -->
-		 <view class="map-box">
+		 <view class="map-box" v-show="mymap">
 				<map  class="map-me"></map>
 		 </view>
-		 <scroll-view scroll-y class="mymap-list-box"  >
+		 
+		 <!-- 地址列表 -->
+		 <scroll-view scroll-y class="mymap-list-box"  v-show="onebox">
 		 	<view class="mymap-list">
 				<text class="mymap-address-one">我的位置</text>
 				<text class="mymap-address-two">上海市嘉定区</text>
@@ -37,7 +39,7 @@
 		 </scroll-view>
 		 
 		 <!-- 点击搜索栏后出现的地址列表 -->
-		  <scroll-view scroll-y class="mymap-list-box-two" v-show="false">
+		  <scroll-view scroll-y class="mymap-list-box-two" v-show="twobox">
 				<view class="mymap-list-two">
 					<image src="../static/images/41.png" mode="" class="mymap-seach-click-img sslfdj"></image>
 		 			<text class="mymap-address-one myone">我的位置</text>
@@ -53,8 +55,29 @@
 	export default {
 		data() {
 			return {
-				
+				seachone:true,
+				seach:false,
+				onebox:true,
+				twobox:false,
+				mymap:true
 			};
+		},
+		methods:{
+			seachclick(){
+				this.seach = true ;
+				this.seachone = false ;
+				this.onebox = false ;
+				this.twobox = true ;
+				this.mymap=false
+			},
+			seachtwo(){
+				this.seach = false ;
+				this.seachone = true ;
+				this.onebox = true ;
+				this.twobox = false;
+				this.mymap = true
+
+			}
 		}
 	}
 </script>
@@ -69,6 +92,7 @@
 			width: 100%;
 			height: 110upx;
 			background-color: #FFFFFF;
+			position: relative;
 		}
 			.mymap-seach-one{
 				width: 100%;
@@ -76,6 +100,8 @@
 				display: flex;
 				justify-content: center;
 				align-items: center;
+				position: absolute;
+				
 			}
 
 				.mymap-seach-click{
@@ -86,6 +112,8 @@
 					display: flex;
 					justify-content: center;
 					align-items: center;
+					position: absolute;
+					
 				}
 					.mymap-seach-click-img{
 						width: 40upx;

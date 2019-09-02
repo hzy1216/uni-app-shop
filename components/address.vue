@@ -1,168 +1,72 @@
 <template>
 	<view class="address">
 		<view class="setting-top">
-			<navigator class="setting-top-url"  @click="settclick()" open-type="navigateBack">
+			<view class="setting-top-url"  @click="settclick()">
 				<image src="../static/images/iconfontjiantou1.png" mode="" class="setting-top-img" ></image>
-			</navigator>
+			</view>
 			
 			<text class="setting-top-title" style="margin-right: 40%;">收货地址</text>
 		</view>
 		<scroll-view scroll-y class="address-list">
-			<view class="address-box">
+			<view class="address-box" v-for="item in add" :key="item.id">
 				<view class="address-box-left">
 					<view class="address-title-top">
-						<text class="address-mr">默认</text>
-						<text class="address-add">上海嘉定马陆嘿嘿嘿呵马陆嘿嘿嘿呵马陆嘿嘿嘿呵马陆嘿嘿嘿呵马陆嘿嘿嘿马陆嘿嘿嘿马陆嘿嘿嘿马陆嘿嘿嘿呵</text>
+						<text class="address-mr" v-show="moren">默认</text>
+						<text class="address-add">{{item.address}}{{item.floor}}</text>
 					</view>
 					<view class="address-title-bott">
-						<text class="address-name">张三</text>
-						<text class="address-num">15679137824</text>
+						<text class="address-name">{{item.name}}</text>
+						<text class="address-num">{{item.number}}</text>
 					</view>
 				</view>
-				<navigator url="" class="address-right">
+				<view class="address-right" @click="toadd('edit',item)">
 					<image src="../static/images/xiugai.png" mode="" class="address-right-img"></image>
-				</navigator>
-			</view>
-			<view class="address-box">
-				<view class="address-box-left">
-					<view class="address-title-top">
-						<text class="address-mr" v-show="false">默认</text>
-						<text class="address-add">上海嘉定马陆嘿嘿嘿呵呵</text>
-					</view>
-					<view class="address-title-bott">
-						<text class="address-name">张三</text>
-						<text class="address-num">15679137824</text>
-					</view>
 				</view>
-				<navigator url="" class="address-right">
-					<image src="../static/images/xiugai.png" mode="" class="address-right-img"></image>
-				</navigator>
-			</view>
-			
-			<view class="address-box">
-				<view class="address-box-left">
-					<view class="address-title-top">
-						<text class="address-mr" v-show="false">默认</text>
-						<text class="address-add">上海嘉定马陆嘿嘿嘿呵呵</text>
-					</view>
-					<view class="address-title-bott">
-						<text class="address-name">张三</text>
-						<text class="address-num">15679137824</text>
-					</view>
-				</view>
-				<navigator url="" class="address-right">
-					<image src="../static/images/xiugai.png" mode="" class="address-right-img"></image>
-				</navigator>
-			</view>
-			<view class="address-box">
-				<view class="address-box-left">
-					<view class="address-title-top">
-						<text class="address-mr" v-show="false">默认</text>
-						<text class="address-add">上海嘉定马陆嘿嘿嘿呵呵</text>
-					</view>
-					<view class="address-title-bott">
-						<text class="address-name">张三</text>
-						<text class="address-num">15679137824</text>
-					</view>
-				</view>
-				<navigator url="" class="address-right">
-					<image src="../static/images/xiugai.png" mode="" class="address-right-img"></image>
-				</navigator>
-			</view>
-			<view class="address-box">
-				<view class="address-box-left">
-					<view class="address-title-top">
-						<text class="address-mr" v-show="false">默认</text>
-						<text class="address-add">上海嘉定马陆嘿嘿嘿呵呵</text>
-					</view>
-					<view class="address-title-bott">
-						<text class="address-name">张三</text>
-						<text class="address-num">15679137824</text>
-					</view>
-				</view>
-				<navigator url="" class="address-right">
-					<image src="../static/images/xiugai.png" mode="" class="address-right-img"></image>
-				</navigator>
-			</view>
-			<view class="address-box">
-				<view class="address-box-left">
-					<view class="address-title-top">
-						<text class="address-mr" v-show="false">默认</text>
-						<text class="address-add">上海嘉定马陆嘿嘿嘿呵呵</text>
-					</view>
-					<view class="address-title-bott">
-						<text class="address-name">张三</text>
-						<text class="address-num">15679137824</text>
-					</view>
-				</view>
-				<navigator url="" class="address-right">
-					<image src="../static/images/xiugai.png" mode="" class="address-right-img"></image>
-				</navigator>
-			</view>
-			<view class="address-box">
-				<view class="address-box-left">
-					<view class="address-title-top">
-						<text class="address-mr" v-show="false">默认</text>
-						<text class="address-add">上海嘉定马陆嘿嘿嘿呵呵</text>
-					</view>
-					<view class="address-title-bott">
-						<text class="address-name">张三</text>
-						<text class="address-num">15679137824</text>
-					</view>
-				</view>
-				<navigator url="" class="address-right">
-					<image src="../static/images/xiugai.png" mode="" class="address-right-img"></image>
-				</navigator>
-			</view>
-			<view class="address-box">
-				<view class="address-box-left">
-					<view class="address-title-top">
-						<text class="address-mr" v-show="false">默认</text>
-						<text class="address-add">上海嘉定马陆嘿嘿嘿呵呵</text>
-					</view>
-					<view class="address-title-bott">
-						<text class="address-name">张三</text>
-						<text class="address-num">15679137824</text>
-					</view>
-				</view>
-				<navigator url="" class="address-right">
-					<image src="../static/images/xiugai.png" mode="" class="address-right-img"></image>
-				</navigator>
-			</view>
-			<view class="address-box">
-				<view class="address-box-left">
-					<view class="address-title-top">
-						<text class="address-mr" v-show="false">默认</text>
-						<text class="address-add">11上海嘉定马陆嘿嘿嘿呵呵</text>
-					</view>
-					<view class="address-title-bott">
-						<text class="address-name">张三</text>
-						<text class="address-num">15679137824</text>
-					</view>
-				</view>
-				<navigator url="" class="address-right">
-					<image src="../static/images/xiugai.png" mode="" class="address-right-img"></image>
-				</navigator>
 			</view>
 		</scroll-view>
-		<navigator class="address-butt" url="../components/add">
+		<view class="address-butt" @click="toadd('add')">
 			<text>新增地址</text>
-		</navigator>
+		</view>
 		
 	</view>
 </template>
 
 <script>
-
+	import address from '../static/data/address.js'
 	export default {
 		 data() {
       return {
-                
-            }
-        },
+        add:address.add,
+				moren:false,
+				
+      }
+    },
+		onLoad(option) {
+			
+			let lodata = option.data
+			console.log(option.data)
+			
+		},
 		components:{
 			
 		},
+		methods:{
+			settclick(){
+				uni.switchTab({
+					url:'../pages/user'
+				})
+			},
+			toadd(type,option){
+				let data = JSON.stringify(option) 
+				uni.navigateTo({
+					url:`../components/add?type=${type}&data=${encodeURIComponent(data)}`,
+				})
+			},
+			
+		},
+		mounted() {
+			
+		}
 	
 	}
 </script>
