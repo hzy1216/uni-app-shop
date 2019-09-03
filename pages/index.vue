@@ -44,6 +44,7 @@
 						</view>
 						
 				</view>
+				<uni-load-more :loadingType="1" class="mb"></uni-load-more>
 		</scroll-view>
 	</view>
 	
@@ -55,14 +56,16 @@
 	import homenav from '../components/homenav.vue'
 	import swiperlist from '../components/swiperlist.vue'
 	import Home from '../static/data/home.js'
+	import uniLoadMore from '../components/uni-load-more/uni-load-more.vue'
 	export default {
 		data() {
 			return {
 				homeList:Home.homeList,
+				
 			}
 		},
 		components:{
-			topnav,swiperbanner,homenav,swiperlist,
+			topnav,swiperbanner,homenav,swiperlist,uniLoadMore
 		},
 		methods:{
 			todetail(id,option){
@@ -147,7 +150,10 @@
 				}
 				
 				
-		.list-url:nth-last-child(1){
-			margin-bottom: 100upx;
+		
+		.mb{
+			margin-bottom: 150upx;
+			height: 40upx;
+			line-height: 40upx;
 		}
 </style>

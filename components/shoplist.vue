@@ -59,6 +59,7 @@
 						</view>				
 					</view>		
 			</view>
+			<uni-load-more :loadingType="1"></uni-load-more>
 		</scroll-view>
 		
 		
@@ -67,6 +68,7 @@
 
 <script>
 	import listData from '../static/data/goodsList.js' 
+	import uniLoadMore from './uni-load-more/uni-load-more.vue'
 	export default {
 		data(){
 			return{
@@ -79,7 +81,9 @@
 				shoptitle:null
 			}
 		},
-	
+		components: {
+			uniLoadMore
+		},
 		onLoad(option) {
 		
 			const oid = decodeURIComponent(option.id)
