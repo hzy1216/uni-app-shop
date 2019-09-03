@@ -5,14 +5,10 @@
 			</view>
 			<view class="classify-list">
 					<scroll-view scroll-y class="classify-list-left">
-						<!-- <navigator url="" class="classify-list-left-a" @click="getmybox('#classify-one')">手机数码</navigator>
-						<navigator url="" class="classify-list-left-a">礼品鲜花</navigator>
-						<navigator url="" class="classify-list-left-a">男装女装</navigator>
-						<navigator url="" class="classify-list-left-a">母婴用品</navigator> -->
-						<a class="classify-list-left-a" href="#classify-one" >手机数码</a>
-						<a  class="classify-list-left-a"  href="#classify-two" >礼品鲜花</a>
-						<a class="classify-list-left-a"  href="#classify-three" >男装女装</a>
-						<a  class="classify-list-left-a"  href="#classify-four" >母婴用品</a>
+						<a class="classify-list-left-a" href="#classify-one" @click="classclick(0)" :class='{cactive:0 == classValue}'>手机数码</a>
+						<a  class="classify-list-left-a"  href="#classify-two" @click="classclick(1)" :class='{cactive:1 == classValue}'>礼品鲜花</a>
+						<a class="classify-list-left-a"  href="#classify-three" @click="classclick(2)" :class='{cactive:2 == classValue}'>男装女装</a>
+						<a  class="classify-list-left-a"  href="#classify-four" @click="classclick(3)" :class='{cactive:3 == classValue}'>母婴用品</a>
 					</scroll-view>
 					<scroll-view scroll-y class="classify-list-right">
 						<!-- 一楼 -->
@@ -78,7 +74,8 @@
 						one:"one",
 						two:"two",
 						three:"three",
-						four:"four"
+						four:"four",
+						classValue: "0",
 				};
 			},
 			methods:{
@@ -88,6 +85,9 @@
 					uni.navigateTo({
 						url:`../components/shoplist?id=${id}&data=${encodeURIComponent(option)}`,
 					})
+				},
+				classclick:function(id){
+					this.classValue = id ;
 				}
 				
 			}
@@ -95,9 +95,11 @@
 </script>
 
 <style scoped>
-	uni-page-body{
-		height: 100%;
+
+	.cactive{
+		background-color: #ffeefc;
 	}
+
 	.classify{
 		width: 100%;
 		height: 100%;

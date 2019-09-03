@@ -6,13 +6,16 @@
 			</navigator>
 			<text class="setting-top-title" style="margin-right:40%;">购物车</text>
 		</view>
-		
+		<view class="cart-title" v-show="carttitle">
+			<text class="cart-title-l">空空如也</text>
+			<navigator url="login" open-type="navigate" class="cart-title-url">去登陆</navigator>
+		</view>
 		<scroll-view scroll-y class="mycart">
 			<!-- 要结算的商品 -->
 			<view class="mycart-list" v-for="(item,index) in cart" :key="item.id">
 				<view class="mycart-list-xzq-l">
-					<image src="../static/images/select.png" mode="" class="mycart-list-xzq-img-l" v-show="imgone" @click="imageone(index)"></image>
-					<image src="../static/images/selected.png" mode="" class="mycart-list-xzq-img-l" v-show="imgtwo"  @click="imagetwo(index)"></image>
+					<image src="../static/images/select.png" mode="" class="mycart-list-xzq-img-l" @click="imgone(item.id)" ></image>
+					<image src="../static/images/selected.png" mode="" class="mycart-list-xzq-img-t"  @click="imgtwo(item.id)"></image>
 				</view>		
 				<view class="mycart-list-box" >
 					<image :src="item.image" mode="" class="mycart-list-box-img" @click="tdcart(item.id,item)"></image>
@@ -46,8 +49,8 @@
 			<!-- 结算 -->
 		<view class="settle">
 			<view class="mycart-list-xzq">
-				<image src="../static/images/select.png" mode="" class="mycart-list-xzq-img" @click="oneimg()" v-show="imgt"></image>
-				<image src="../static/images/selected.png" mode="" class="mycart-list-xzq-img" v-show="imgl" @click="twoimg()"></image>
+				<image src="../static/images/select.png" mode="" class="sett-list-xzq-img" @click="imglist()" v-show="imageone"></image>
+				<image src="../static/images/selected.png" mode="" class="sett-list-xzq-img" @click="imglst()" v-show="imagetwo"></image>
 			</view>
 			<view class="settle-bott">
 				<view class="settle-box">
@@ -67,42 +70,96 @@
 		data(){
 			return{
 				cart:cartData.cart,
-				
-				imgone:true,
-				imgtwo:false,
-				imgt:true,
-				imgl:false,
-				yhsum:(Math.random(100)*100).toFixed(2)
+				yhsum:(Math.random(100)*100).toFixed(2),
+				carttitle:false,
+				imageone:false,
+				imagetwo:true,
+
 			}
 		},
 		onLoad(option) {
-			console.log(option)
-			// const item = JSON.stringify(decodeURIComponent(option.data));
-			// this.cart = item;
-			// console.log(item)
+			// 控制有无数据时出现提示语
+			if( this.cart.length == 0) {
+				this.carttitle = true ;
+			}else{
+				this.carttitle = false
+			}
+			
 		},
 		methods:{
-			imageone(index){
+			imgone(id){
+					var oimgs = document.querySelectorAll('.mycart-list-xzq-img-l')
+					var timgs = document.querySelectorAll('.mycart-list-xzq-img-t')
 				
-				this.imgone = false ;
-				this.imgtwo = true;
-			},
-			imagetwo(index){
 				
-				this.imgone = true ;
-				this.imgtwo = false;
+					oimgs[id-1].style.display = 'none' ;
+					timgs[id-1].style.display = 'block' ;
+					
+					for( var i = 0 ; i < oimgs.length ; i++){
+						for( var j= 0 ; j< timgs.length ; j ++ ){
+							if(oimgs[i].style.display != 'block' && timgs[j].style.display != 'none'){
+								
+								this.imageone =false ;
+								this.imagetwo = true;
+								
+							}else{
+								this.imageone =true ;
+								this.imagetwo = false;
+							}
+						}
+						
+					}
+					
+					
+					
 			},
-			oneimg(){
-				this.imgone = false ;
-				this.imgtwo = true  ;
-				this.imgt=false ;
-				this.imgl=true ;
+			imgtwo(oid){
+					
+					var oimg = document.querySelectorAll('.mycart-list-xzq-img-l')
+					var timg = document.querySelectorAll('.mycart-list-xzq-img-t')
+					
+					oimg[oid-1].style.display = 'block' ;
+					timg[oid-1].style.display = 'none' ;
+					
+					for( var i = 0 ; i < timg.length ; i++){
+						for( var j = 0 ; j<oimg.length ; j ++){
+							if(timg[i].style.display != 'block' && oimg[j].style.display != 'none'){
+								this.imageone = true ;
+								this.imagetwo = false ;
+							}
+						}
+						
+					}
+					
 			},
-			twoimg(){
-				this.imgtwo = false ;
-				this.imgone = true  ;
-				this.imgl=false ;
-				this.imgt=true ;
+			imglist(){
+				this.imageone = false ;
+				this.imagetwo=true ;
+				var oimg = document.querySelectorAll('.mycart-list-xzq-img-l')
+				var timg = document.querySelectorAll('.mycart-list-xzq-img-t')
+				for( var i = 0 ; i < oimg.length ; i++){
+						oimg[i].style.display = 'none' ;
+				}
+				for( var j = 0 ; j < timg.length ; j++){
+						timg[j].style.display = 'block' ;
+				}
+				
+			},
+			imglst(){
+				this.imageone = true ;
+				this.imagetwo = false ;
+				var oimg = document.querySelectorAll('.mycart-list-xzq-img-l')
+				var timg = document.querySelectorAll('.mycart-list-xzq-img-t')
+				console.log(oimg)
+				for( var i = 0 ; i < oimg.length ; i++){
+						oimg[i].style.display = 'block' ;
+				}
+				for( var j = 0 ; j < timg.length ; j++){
+						timg[j].style.display = 'none' ;
+				}
+				// oimg.style.display = 'block' ;
+				// timg.style.display = 'none' ;
+
 			},
 			cartclick(){
 				uni.navigateBack({
@@ -141,9 +198,6 @@
 				});
 				return result;
 			}
-				
-				
-			
 		}
 		
 	}
@@ -166,6 +220,28 @@
 			justify-content: center;
 			border-bottom: 1px #f4f4f4 solid;
 		}
+		/* 没有数据时显示的 */
+		.cart-title{
+			width: 100%;
+			height: 40%;
+			margin-top: 20%;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-direction: column;
+			
+			
+		}
+			.cart-title-l {
+				color: #555555;
+				font-size: 42upx;
+				margin-bottom: 30upx;
+				
+			}
+			.cart-title-url{
+				color: #FD6E15;
+				font-size: 36upx;
+			} 
 		/* 控制加减 */
 		.cartcontrol{
 			width: 100%;
@@ -227,6 +303,11 @@
 					height: 60upx;
 					position: absolute;
 				}
+				.sett-list-xzq-img{
+					width: 60upx;
+					height: 60upx;
+					position: absolute;
+				}
 				.settle-bott{
 					width: 65%;
 					height: 120upx;
@@ -280,6 +361,11 @@
 			
 		}
 			.mycart-list-xzq-img-l{
+				width: 40upx;
+				height: 40upx;
+				position: absolute;
+			}
+			.mycart-list-xzq-img-t{
 				width: 40upx;
 				height: 40upx;
 				position: absolute;
