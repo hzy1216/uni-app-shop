@@ -9,7 +9,7 @@
 		<scroll-view scroll-y class="detail-box">
 			
 			<!-- banner轮播图 -->
-			<swiper autoplay="true" class="detail-swiper">
+			<swiper autoplay="true" class="detail-swiper" indicator-dots="true" circular="true">
 				<swiper-item class="detail-item">
 						<image :src="detail.image" mode="" class="detail-item-img"></image>
 				</swiper-item>
@@ -122,11 +122,11 @@
 		<!-- 底部的功能区 -->
 		<view class="detail-bott">
 			<view class="detail-bott-left">
-				<navigator class="detail-bott-left-a" @click="detailindexclick()">
+				<navigator class="detail-bott-left-a" @click="detailindexclick()" open-type="switchTab">
 					<image src="../static/images/tab-home.png" mode="" class="detail-left-img"></image>
 					<text class="detail-left-title">首页</text>
 				</navigator>
-				<navigator class="detail-bott-left-a" @click="detailclick()">
+				<navigator class="detail-bott-left-a" @click="detailclick()" open-type="switchTab">
 					<image src="../static/images/tab-cart.png" mode="" class="detail-left-img"></image>
 					<text class="detail-left-title">购物车</text>
 				</navigator>
@@ -168,7 +168,7 @@
 		},
 		// 从首页或列表页接受到的数据
 		onLoad(option) {
-			console.log(option.data)
+			
 			const item = JSON.parse(decodeURIComponent(option.data));
 			this.detail = item;
 		},
@@ -194,9 +194,14 @@
 				 });
 			 },
 			 add(option){
+				
 					let data = JSON.stringify(option)
 					this.cartlist = data ;
-					
+					let mydata = this.cartlist ;
+					console.log(mydata)
+					uni.reLaunch({
+						url:`../pages/cart?data=${encodeURIComponent(mydata)}`,
+					})
 			 },
 			ai(){
 				this.aione = false ;

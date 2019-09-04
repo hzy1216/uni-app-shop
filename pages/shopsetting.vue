@@ -60,9 +60,9 @@
 					</view>
 				</navigator>
 				
-				<navigator class="setting-butt" url="/pages/login">
-					<text>退出登录</text>
-				</navigator>
+				<view class="setting-butt" >
+					<button  type="default" @tap="bindLogout" class="setting-text">退出登录</button>
+				</view>
 			</scroll-view>
        
             
@@ -72,7 +72,10 @@
 </template>
 	
 <script>
-	
+	 import {
+	    mapState,
+	    mapMutations
+	} from 'vuex'
 	export default{
 		data(){
 			return {
@@ -80,16 +83,35 @@
 			}
 			
 		},
-	
+		 computed: {
+		    ...mapState(['hasLogin', 'forcedLogin'])
+		},
 		mounted() {
 			
 		},
 		methods:{
-			 shopsettingclick(){			 				
-						uni.switchTab({
-								url: 'user'
+				...mapMutations(['logout']),
+			bindLogin() {
+					uni.navigateTo({
+							url: 'login',
 					});
-			 }
+			},
+			bindLogout() {
+					this.logout();
+					/**
+					 * 如果需要强制登录跳转回登录页面
+					 */
+					if (this.forcedLogin) {
+							uni.reLaunch({
+									url: '../pages/user',
+							});
+					}
+			},
+			shopsettingclick(){
+				uni.switchTab({
+					url:'../pages/user'
+				})
+		},
 		}
 	}
 </script>
@@ -146,7 +168,7 @@
 		.setting-butt{
 			width: 100%;
 			height: 110upx;
-			background-color: #FFFFFF;
+			
 			margin-top: 20upx;
 			display: flex;
 			justify-content: center;
@@ -154,4 +176,11 @@
 			font-size: 32upx;
 			color: #c84169;
 		}
+			.setting-text{
+				width: 100%;
+				height: 110upx;
+				line-height: 110upx;
+				background-color: #FFFFFF;
+				font-size: 36upx;
+			}
 </style>

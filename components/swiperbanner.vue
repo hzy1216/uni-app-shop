@@ -1,5 +1,5 @@
 <template>
-	 <swiper class="swiper" autoplay="true">
+	 <swiper class="swiper" autoplay="true" indicator-dots="true" circular="true">
 				<swiper-item>
 					<navigator url="">
 						<image src="../static/images/temp/banner1.jpg" mode=""></image>

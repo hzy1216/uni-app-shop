@@ -6,11 +6,11 @@
 			</navigator>
 			<text class="setting-top-title" style="margin-right:40%;">购物车</text>
 		</view>
-		<view class="cart-title" v-show="carttitle">
+		<view class="cart-title" v-show="carttitle" >
 			<text class="cart-title-l">空空如也</text>
 			<navigator url="login" open-type="navigate" class="cart-title-url">去登陆</navigator>
 		</view>
-		<scroll-view scroll-y class="mycart">
+		<scroll-view scroll-y class="mycart" >
 			<!-- 要结算的商品 -->
 			<view class="mycart-list" v-for="(item,index) in cart" :key="item.id">
 				<view class="mycart-list-xzq-l">
@@ -65,6 +65,9 @@
 </template>
 
 <script>
+	import {
+	    mapState
+	} from 'vuex'
 	import cartData from '../static/data/cart.js'
 	export default{
 		data(){
@@ -77,7 +80,36 @@
 
 			}
 		},
+		computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
 		onLoad(option) {
+			const item = JSON.stringify(decodeURIComponent(option));
+			console.log(option)
+			if (!this.hasLogin) {
+			    uni.showModal({
+			        title: '未登录',
+			        content: '您未登录，需要登录后才能继续',
+			        /**
+			         * 如果需要强制登录，不显示取消按钮
+			         */
+			        showCancel: !this.forcedLogin,
+			        success: (res) => {
+			            if (res.confirm) {
+				/**
+				 * 如果需要强制登录，使用reLaunch方式
+				 */
+			                if (this.forcedLogin) {
+			                    uni.reLaunch({
+			                        url: '../pages/login'
+			                    });
+			                } else {
+			                    uni.navigateTo({
+			                        url: '../pages/login'
+			                    });
+			                }
+			            }
+			        }
+			    });
+			}
 			// 控制有无数据时出现提示语
 			if( this.cart.length == 0) {
 				this.carttitle = true ;

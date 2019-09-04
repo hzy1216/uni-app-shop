@@ -5,16 +5,24 @@
 			<text class="user-top-one-title">我的</text>
 			<image src="../static/images/shezhi.png" mode="" class="user-top-one-three"></image>
 		</view>
-		<view class="user-top">
+		<view class="user-top" v-if="!hasLogin">
 			<view class="user-top-box">
 				<image src="../static/images/missing-face.png" mode="" class="user-name-img"></image>
 			</view>
-			
-			<text class="user-name">hzy我发旺旺发我</text>
+			<navigator class="user-name"  url="../pages/login" open-type="navigate">去登陆</navigator>
 		</view>
+		<view class="user-top" v-if="hasLogin">
+			<view class="user-top-box">
+				<image src="http://5b0988e595225.cdn.sohucs.com/images/20181230/d5646a7e573c4dc286e24a03b6d3503e.jpeg" mode="" class="user-name-img"></image>
+			</view>
+			<text class="user-name" >{{userName}}</text>
+		</view>
+		
+					
+		
 		<view class="user-nav">
 			<view class="user-nav-list">
-				<text class="user-nav-icon">145</text>
+				<text class="user-nav-icon">0</text>
 				<text class="user-nav-title">余额</text>
 			</view>
 			<view class="user-nav-list">
@@ -137,27 +145,63 @@
 				<image src="../static/images/youjiantou.png" mode="" class="user-naver-right-img"></image>
 			</view>
 		</navigator>
-	
+		<!-- <view class="user-naver" url="/pages/shopsetting" >
+			<button v-if="!hasLogin" type="primary" class="user-nav-butt" @tap="bindLogin">登录</button>
+			<button v-if="hasLogin" type="default" @tap="bindLogout" class="user-nav-butt">退出登录</button>
+			
+		</view> -->
 		
 		
 	</scroll-view>
 </template>
 
 <script>
+	 import {
+	    mapState
+	} from 'vuex'
+	
+	
 	export default{
+		computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
+		onLoad() {
+		    if (!this.hasLogin) {
+		        uni.showModal({
+		            title: '未登录',
+		            content: '您未登录，需要登录后才能继续',
+		            /**
+		             * 如果需要强制登录，不显示取消按钮
+		             */
+		            showCancel: !this.forcedLogin,
+		            success: (res) => {
+		                if (res.confirm) {
+					/**
+					 * 如果需要强制登录，使用reLaunch方式
+					 */
+		                    if (this.forcedLogin) {
+		                        uni.reLaunch({
+		                            url: '../pages/login'
+		                        });
+		                    } else {
+		                        uni.navigateTo({
+		                            url: '../pages/login'
+		                        });
+		                    }
+		                }
+		            }
+		        });
+		    }
+		},
 		methods:{
-			
+		
+			settclicktwo(){			 
+							uni.navigateBack({
+								delta: 1
+							});
+			}
 		},
 		mounted() {
 			
 		},
-		methods:{
-		 settclicktwo(){			 
-				uni.navigateBack({
-					delta: 1
-				});
-		 }
-		}
 	}
 </script>
 
@@ -336,4 +380,14 @@
 					height: 160upx;
 					margin: 14upx 20upx;
 				}
+			.user-nav-butt{
+				width: 60%;
+				height: 60upx;
+				border-radius: 16upx;
+				background-color: #FD6E15;
+				line-height:60upx;
+				color: #FFFFFF;
+				font-size: 24upx;
+			}
+				
 </style>
