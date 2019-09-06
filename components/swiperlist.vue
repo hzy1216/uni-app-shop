@@ -14,21 +14,39 @@
 </template>
 
 <script>
-	import Home from '../static/data/home.js'
+	// import Home from '../static/data/home.js'
 	export default {
 		data() {
 			return {
-				swiperlist:Home.homelisttwo
+				// swiperlist:Home.homeListtwo
+				swiperlist:[]
 			};
 		},
 		methods:{
 			todetail(id,option){
 			// 向detail页面传递数据
 				let data = JSON.stringify(option) 
+				let type = 'swphome' 
 				uni.navigateTo({
-					url:`../components/detail?id=${id}&data=${encodeURIComponent(data)}`,
+					url:`../components/detail?id=${id}&type=${type}&data=${encodeURIComponent(data)}`,
 				})
+			},
+			getjson(){
+				uni.request({
+						url: '../static/data/home.json', //仅为示例，并非真实接口地址。
+						method:'get',
+						success: (res) => {
+								if( res.data.homeList != ''){
+									this.swiperlist = res.data.homeListtwo;
+								}else{
+									console.log('数据获取失败')
+								}
+						}
+				});
 			}
+		},
+		mounted(){
+			this.getjson();
 		}
 	}
 </script>

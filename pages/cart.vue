@@ -6,21 +6,22 @@
 			</navigator>
 			<text class="setting-top-title" style="margin-right:40%;">购物车</text>
 		</view>
-		<view class="cart-title" v-show="carttitle" >
-			<text class="cart-title-l">空空如也</text>
-			<navigator url="login" open-type="navigate" class="cart-title-url">去登陆</navigator>
-		</view>
+		
 		<scroll-view scroll-y class="mycart" >
+			<view class="cart-title" v-show="carttitle" >
+				<text class="cart-title-l">空空如也</text>
+				<navigator url="classify" open-type="switchTab" class="cart-title-url">去添加</navigator>
+			</view>
 			<!-- 要结算的商品 -->
-			<view class="mycart-list" v-for="(item,index) in cart" :key="item.id">
+			<view class="mycart-list" v-for="(item,index) in cart" :key="index">
 				<view class="mycart-list-xzq-l">
-					<image src="../static/images/select.png" mode="" class="mycart-list-xzq-img-l" @click="imgone(item.id)" ></image>
-					<image src="../static/images/selected.png" mode="" class="mycart-list-xzq-img-t"  @click="imgtwo(item.id)"></image>
+					<image src="../static/images/select.png" mode="" class="mycart-list-xzq-img-l" @click="imgone(index)" ></image>
+					<image src="../static/images/selected.png" mode="" class="mycart-list-xzq-img-t"  @click="imgtwo(index)"></image>
 				</view>		
 				<view class="mycart-list-box" >
-					<image :src="item.image" mode="" class="mycart-list-box-img" @click="tdcart(item.id,item)"></image>
+					<image :src="item.image" mode="" class="mycart-list-box-img" @click="tdcart(index,item)"></image>
 					<view class="mycart-list-title">
-						<view @click="tdcart(item.id,item)">
+						<view @click="tdcart(index,item)">
 							<text class="mycart-list-title-top">{{item.title}}{{item.title}}</text>
 							<text class="mycart-list-title-bott">{{item.title}}</text>
 							<text class="mycart-list-title-price">&#165; {{item.price}}</text>
@@ -47,7 +48,7 @@
 		</scroll-view>
 		
 			<!-- 结算 -->
-		<view class="settle">
+		<view class="settle" v-show="settle">
 			<view class="mycart-list-xzq">
 				<image src="../static/images/select.png" mode="" class="sett-list-xzq-img" @click="imglist()" v-show="imageone"></image>
 				<image src="../static/images/selected.png" mode="" class="sett-list-xzq-img" @click="imglst()" v-show="imagetwo"></image>
@@ -65,67 +66,117 @@
 </template>
 
 <script>
-	import {
-	    mapState
-	} from 'vuex'
-	import cartData from '../static/data/cart.js'
+	// import {
+	//     mapState
+	// } from 'vuex'
+	
 	export default{
+		
 		data(){
 			return{
-				cart:cartData.cart,
+				cart:[
+					
+				],
+				cartlist:{
+					
+				},
+				settle:null,
 				yhsum:(Math.random(100)*100).toFixed(2),
 				carttitle:false,
 				imageone:false,
 				imagetwo:true,
-
 			}
 		},
-		computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
+		// computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
 		onLoad(option) {
-			const item = JSON.stringify(decodeURIComponent(option));
-			console.log(option)
-			if (!this.hasLogin) {
-			    uni.showModal({
-			        title: '未登录',
-			        content: '您未登录，需要登录后才能继续',
-			        /**
-			         * 如果需要强制登录，不显示取消按钮
-			         */
-			        showCancel: !this.forcedLogin,
-			        success: (res) => {
-			            if (res.confirm) {
-				/**
-				 * 如果需要强制登录，使用reLaunch方式
-				 */
-			                if (this.forcedLogin) {
-			                    uni.reLaunch({
-			                        url: '../pages/login'
-			                    });
-			                } else {
-			                    uni.navigateTo({
-			                        url: '../pages/login'
-			                    });
-			                }
-			            }
-			        }
-			    });
-			}
+			
+			
+			
+			
+			
+			
+			
+			// if (!this.hasLogin) {
+			//     uni.showModal({
+			//         title: '未登录',
+			//         content: '您未登录，需要登录后才能继续',
+			//         /**
+			//          * 如果需要强制登录，不显示取消按钮
+			//          */
+			//         showCancel: !this.forcedLogin,
+			//         success: (res) => {
+			//             if (res.confirm) {
+			// 	/**
+			// 	 * 如果需要强制登录，使用reLaunch方式
+			// 	 */
+			//                 if (this.forcedLogin) {
+			//                     uni.reLaunch({
+			//                         url: '../pages/login'
+			//                     });
+			//                 } else {
+			//                     uni.navigateTo({
+			//                         url: '../pages/login'
+			//                     });
+			//                 }
+			//             }
+			//         }
+			//     });
+			// }
 			// 控制有无数据时出现提示语
-			if( this.cart.length == 0) {
-				this.carttitle = true ;
-			}else{
-				this.carttitle = false
-			}
+		
 			
 		},
+		
 		methods:{
+			getcart(){
+				
+				var that = this
+				uni.getStorage({
+						key: 'cart',
+						success: function (res) {
+							console.log(res.data)
+							if( res.data == ''||typeof res.data == "undefined" || res.data == null ){
+								that.cart = null;
+								uni.showToast({title: "请去添加商品"})
+							}else{
+								let p = {
+								"num":"1",
+								"image": res.data.image,
+								"image2":res.data.image2,
+								"image3":res.data.image3,
+								"title":res.data.title,
+								"number":res.data.number,
+								"price":res.data.price,
+								}
+								that.settle = true ;
+								that.cart.push(p)
+						
+								
+									
+							}
+							
+								
+									
+						}
+				});
+				if( this.cart.length == 0){
+					this.carttitle = true ;
+					this.settle = false ;
+				}else{
+					this.carttitle = false ;
+					this.settle = true ;
+				}
+				
+				
+			},
+			
 			imgone(id){
 					var oimgs = document.querySelectorAll('.mycart-list-xzq-img-l')
 					var timgs = document.querySelectorAll('.mycart-list-xzq-img-t')
 				
 				
-					oimgs[id-1].style.display = 'none' ;
-					timgs[id-1].style.display = 'block' ;
+					oimgs[id].style.display = 'none' ;
+					timgs[id].style.display = 'block' ;
 					
 					for( var i = 0 ; i < oimgs.length ; i++){
 						for( var j= 0 ; j< timgs.length ; j ++ ){
@@ -150,8 +201,8 @@
 					var oimg = document.querySelectorAll('.mycart-list-xzq-img-l')
 					var timg = document.querySelectorAll('.mycart-list-xzq-img-t')
 					
-					oimg[oid-1].style.display = 'block' ;
-					timg[oid-1].style.display = 'none' ;
+					oimg[oid].style.display = 'block' ;
+					timg[oid].style.display = 'none' ;
 					
 					for( var i = 0 ; i < timg.length ; i++){
 						for( var j = 0 ; j<oimg.length ; j ++){
@@ -191,7 +242,7 @@
 				}
 				// oimg.style.display = 'block' ;
 				// timg.style.display = 'none' ;
-
+		
 			},
 			cartclick(){
 				uni.navigateBack({
@@ -227,12 +278,18 @@
 					
 					result+=item.price*item.num - this.yhsum;
 					
+					
 				});
-				return result;
+				return result>0?result :result = 0;
 			}
-		}
+		},
+		mounted() {
+			this.getcart()
+			this.imgone()
 		
+		}
 	}
+	
 </script>
 
 <style>

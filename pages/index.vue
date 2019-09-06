@@ -44,8 +44,10 @@
 						</view>
 						
 				</view>
-				<uni-load-more :loadingType="1" class="mb"></uni-load-more>
+				<text v-show="tmsg" class="tmsg">{{$msg}}</text>
+				
 		</scroll-view>
+		<view class="loading-text" style="margin-bottom: 100upx;">{{ loadingText }}</view>
 	</view>
 	
 </template>
@@ -55,26 +57,86 @@
 	import swiperbanner from '../components/swiperbanner'
 	import homenav from '../components/homenav.vue'
 	import swiperlist from '../components/swiperlist.vue'
-	import Home from '../static/data/home.js'
-	import uniLoadMore from '../components/uni-load-more/uni-load-more.vue'
+	
 	export default {
 		data() {
 			return {
-				homeList:Home.homeList,
-				
+				homeList:[],
+				headerPosition: 'fixed',
+				headerTop:null,
+				statusTop:null,
+				nVueTitle:null,
+				tmsg:false,
+				loadingText: '正在加载...'
 			}
 		},
 		components:{
-			topnav,swiperbanner,homenav,swiperlist,uniLoadMore
+			topnav,swiperbanner,homenav,swiperlist
+		},
+		onPageScroll(e) {
+			//兼容iOS端下拉时顶部漂移
+			this.headerPosition = e.scrollTop>=0?"fixed":"absolute";
+			this.headerTop = e.scrollTop>=0?null:0;
+			this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
+		},
+		onPullDownRefresh() {
+			setTimeout(function() {
+				uni.stopPullDownRefresh();
+			}, 1000);
+		},
+		onReachBottom() {
+			uni.showToast({ title: '触发上拉加载' });
+			
+			let len = this.homeList.length;
+			if (len >= 48) {
+				this.loadingText = '到底了';
+				return false;
+			}
+			// 演示,随机加入商品,生成环境请替换为ajax请求
+			let end_goods_id = this.homeList[len-1].goods_id;
+			for (let i = 1; i <= 12; i++) {
+				let goods_id = end_goods_id + i;
+				let p = {
+					goods_id: goods_id,
+					image: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553187020783&di=bac9dd78b36fd984502d404d231011c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201609%2F26%2F20160926173213_s5adi.jpeg",
+					image2: "http://pic.rmb.bdstatic.com/819a044daa66718c2c40a48c1ba971e6.jpeg",
+					image3: "http://img001.hc360.cn/y5/M00/1B/45/wKhQUVYFE0uEZ7zVAAAAAMj3H1w418.jpg",
+					title: "古黛妃 短袖t恤女夏装2019新款韩版宽松",
+					price: "179",
+					number: "61"
+				};
+				this.homeList.push(p);
+			}
 		},
 		methods:{
 			todetail(id,option){
 			// 向detail页面传递数据
+			let type = 'home';
 				let data = JSON.stringify(option) 
 				uni.navigateTo({
-					url:`../components/detail?id=${id}&data=${encodeURIComponent(data)}`,
+					url:`../components/detail?id=${id}&type=${type}&data=${encodeURIComponent(data)}`,
 				})
-			}
+			},
+			gethome(){
+				uni.request({
+					url: '../static/data/home.json', //仅为示例，并非真实接口地址。
+					method:'get',
+					success: (res) => {
+							if( res.data.homeList != ''){
+								
+								this.homeList = res.data.homeList;
+							}else{
+								this.$msg = '数据请求失败'				
+								this.uniload = false
+							 	this.tmsg = true
+							}
+					}
+				});
+			},
+		},
+		
+		mounted(){
+			this.gethome();
 		}
 	}
 </script>
@@ -155,5 +217,14 @@
 			margin-bottom: 150upx;
 			height: 40upx;
 			line-height: 40upx;
+		}
+		.tmsg{
+			width: 100%;
+			height: 100upx;
+			float: left;
+			line-height: 100upx;
+			text-align: center;
+			font-size: 36upx;
+			margin-bottom: 100upx;
 		}
 </style>

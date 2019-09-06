@@ -111,13 +111,7 @@ import main from '../main.js'
 
 				}
 				let data = JSON.stringify(option) 
-			
-				
-				uni.navigateTo({
-					url:`../components/address?data=${encodeURIComponent(data)}`,
-				})
-				
-				
+				uni.showToast({title: "已提交"})		
 				
 			}
 			

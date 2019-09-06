@@ -3,7 +3,10 @@
 		{
 			"path": "pages/index",
 			"style": {
-				"navigationBarTitleText": "myshop"
+				"navigationBarTitleText": "myshop",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance":12
+				
 			}
 		}
 			,{
@@ -73,7 +76,9 @@
 				{
 				    "path" : "components/shoplist",
 				    "style" : {
-							"navigationBarTitleText": "商品列表"
+							"navigationBarTitleText": "商品列表",
+							"enablePullDownRefresh": true,
+							"onReachBottomDistance":60
 						}
 				}
 				

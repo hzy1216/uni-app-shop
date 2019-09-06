@@ -8,7 +8,7 @@
 			<text class="setting-top-title" style="margin-right: 40%;">收货地址</text>
 		</view>
 		<scroll-view scroll-y class="address-list">
-			<view class="address-box" v-for="item in add" :key="item.id">
+			<view class="address-box" v-for="item in address" :key="item.id">
 				<view class="address-box-left">
 					<view class="address-title-top">
 						<text class="address-mr" v-show="moren">默认</text>
@@ -32,11 +32,11 @@
 </template>
 
 <script>
-	import address from '../static/data/address.js'
+	
 	export default {
 		 data() {
       return {
-        add:address.add,
+        address:[],
 				moren:false,
 				
       }
@@ -62,9 +62,24 @@
 					url:`../components/add?type=${type}&data=${encodeURIComponent(data)}`,
 				})
 			},
-			
+			getaddress(){
+				uni.request({
+					url: '../static/data/address.json', //仅为示例，并非真实接口地址。
+					method:'get',
+					success: (res) => {
+							if( res.data!= ''){
+							this.address = res.data
+								
+							}else{
+								console.log('数据获取失败')
+							}
+							
+					}
+				});
+			},
 		},
 		mounted() {
+			this.getaddress();
 			
 		}
 	

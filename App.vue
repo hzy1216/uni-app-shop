@@ -10,8 +10,8 @@ export default {
 	onHide: function() {
 		console.log('App Hide');
 	},
-	
-};
+
+}
 </script>
 
 <style>
@@ -102,5 +102,13 @@ export default {
 						font-size: 24upx;
 						
 					}
-	
+	.loading-text {
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 60upx;
+		color: #979797;
+		font-size: 24upx;
+	}
 </style>

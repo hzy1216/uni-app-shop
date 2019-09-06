@@ -63,14 +63,14 @@
 </template>
 
 <script>
-	import floor from '../static/data/class.js'
+	
 		export default{
 			data() {
 				return {				
-						onefloor:floor.onefloor,
-						twofloor:floor.twofloor,
-						threefloor:floor.threefloor,
-						fourfloor:floor.fourfloor,
+						onefloor:[],
+						twofloor:[],
+						threefloor:[],
+						fourfloor:[],
 						one:"one",
 						two:"two",
 						three:"three",
@@ -88,7 +88,27 @@
 				},
 				classclick:function(id){
 					this.classValue = id ;
-				}
+				},
+				getclass(){
+					uni.request({
+						url: '../static/data/class.json', //仅为示例，并非真实接口地址。
+						method:'get',
+						success: (res) => {
+								if( res.data != ''){
+									console.log(res.data)
+									this.onefloor = res.data.onefloor;
+									this.twofloor = res.data.twofloor;
+									this.threefloor = res.data.threefloor;
+									this.fourfloor = res.data.fourfloor;
+								}else{
+									console.log('数据获取失败')
+								}
+						}
+					});
+				},
+			},
+			mounted() {
+				this.getclass();
 				
 			}
 		}

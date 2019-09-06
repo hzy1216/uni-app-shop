@@ -1,4 +1,4 @@
-const cart = [
+[
 	{
 		 "id":"1",
 		"image": "http://img13.360buyimg.com/popWaterMark/jfs/t865/120/206320620/138889/dcc94caa/550acedcN613e2a9d.jpg",
@@ -26,10 +26,5 @@ const cart = [
 		"price": "179",
 		"number": "95",
 		"num":"1"
-	},
+	}
 ]
-
-
-export default{
-	cart
-}

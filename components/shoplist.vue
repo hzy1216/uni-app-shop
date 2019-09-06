@@ -48,7 +48,7 @@
 		
 		<!-- 商品列表 -->
 		
-		<scroll-view scroll-y="true" style="height: 85%">
+		<scroll-view scroll-y="true" style="height: 86%">
 			<view class="list">		
 					<view  class="list-url" v-for="item in shoplist" :key="item.id" @click="shopdetail(item.id,item)">
 						<image :src="item.image" mode="" class="list-img"></image>
@@ -59,65 +59,83 @@
 						</view>				
 					</view>		
 			</view>
-			<uni-load-more :loadingType="1"></uni-load-more>
+			<view class="loading-text">{{ loadingText }}</view>
 		</scroll-view>
-		
+	
 		
 	</view>
 </template>
 
 <script>
-	import listData from '../static/data/goodsList.js' 
-	import uniLoadMore from './uni-load-more/uni-load-more.vue'
+	
+	
 	export default {
 		data(){
 			return{
+				res:null,
 				tabhead:null,
 				tabtitle:false,
 				faceValue: "0",
-				id:null,
+				oid:null,
 				type:null,
 				shoplist:null,
-				shoptitle:null
+				shoptitle:null,
+				headerPosition: 'fixed',
+				headerTop:null,
+				statusTop:null,
+				nVueTitle:null,
+				loadingText: '正在加载...'
 			}
 		},
-		components: {
-			uniLoadMore
-		},
-		onLoad(option) {
 		
-			const oid = decodeURIComponent(option.id)
-			const item = decodeURIComponent(option.data);
-			this.type = item;
-			this.id = oid;
-			if( this.type == "one"){
-				this.shoplist = listData.goodsListone[this.id - 1 ]
-				this.shoptitle = listData.goodtitle[0] 
-				this.tabhead = '手机通讯'
-				 
-			}
-			if( this.type == "two"){
-				this.shoplist = listData.goodsListtwo[this.id - 1 ]
-				this.shoptitle = listData.goodtitle[1]
-				this.tabhead = '礼品鲜花'
-
-			}
-			if( this.type == "three"){
-				this.shoplist = listData.goodsListthree[this.id - 1 ]
-				this.shoptitle = listData.goodtitle[2]
-				this.tabhead = '男装女装'
-
-			}
-			if( this.type == "four"){
-				this.shoplist = listData.goodsListfour[this.id - 1 ]
-				this.shoptitle = listData.goodtitle[3]
-				this.tabhead = '母婴用品'
-
-			}
+		onLoad(option) {
+			console.log(option)
+			this.oid = decodeURIComponent(option.id)
+			this.type = decodeURIComponent(option.data);
+			
+			
+			
 			
 			
 		},
 		methods:{
+			getlist(){
+				uni.request({
+					url: '../static/data/goodsList.json', //仅为示例，并非真实接口地址。
+					method:'get',
+					success: (res) => { 
+						this.res = res.data ;
+						if( res.data != ''){
+							if( this.type == "one"){
+								this.shoplist = res.data.goodsListone[this.oid - 1 ]
+								this.shoptitle = res.data.goodtitle[0] 
+								this.tabhead = '手机通讯'
+								 
+							}
+							if( this.type == "two"){
+								this.shoplist = res.data.goodsListtwo[this.oid - 1 ]
+								this.shoptitle =res.data.goodtitle[1]
+								this.tabhead = '礼品鲜花'
+							
+							}
+							if( this.type == "three"){
+								this.shoplist = res.data.goodsListthree[this.oid - 1 ]
+								this.shoptitle = res.data.goodtitle[2]
+								this.tabhead = '男装女装'
+							
+							}
+							if( this.type == "four"){
+								this.shoplist = res.data.goodsListfour[this.oid - 1 ]
+								this.shoptitle =res.data.goodtitle[3]
+								this.tabhead = '母婴用品'
+							
+							}
+						}else{
+							console.log('数据获取失败')
+						}
+					}
+				});
+			},
 			 shoplistclick(){			 				
 						uni.switchTab({
 								url: '../pages/classify'
@@ -125,8 +143,10 @@
 			 },
 			 shopdetail(id,option){
 				 let data = JSON.stringify(option) 
+				 let type = this.type ;
+					let oid = this.oid ;
 				 uni.navigateTo({
-				 	url:`../components/detail?id=${id}&data=${encodeURIComponent(data)}`,
+				 	url:`../components/detail?id=${id}&oid=${oid}&type=${type}&data=${encodeURIComponent(data)}`,
 				 })
 			 },
 			 showtitle(){
@@ -136,38 +156,77 @@
 				 this.tabtitle = false ;
 
 			 },
-			tablistclick(oid){
+				tablistclick(myid){
+				this.oid = myid ;
 			
 				this.tabtitle = false ;
 				if( this.type == "one"){
-					this.shoplist = listData.goodsListone[oid - 1 ]
-					this.shoptitle = listData.goodtitle[0] 
-					this.tabhead = '手机通讯'
-					 
+					this.shoplist = this.res.goodsListone[myid - 1 ]
+					
+					
 				}
 				if( this.type == "two"){
-					this.shoplist = listData.goodsListtwo[oid - 1 ]
-					this.shoptitle = listData.goodtitle[1]
-					this.tabhead = '礼品鲜花'
-				
+					this.shoplist = this.res.goodsListtwo[myid - 1 ]
+					
+					
+
 				}
 				if( this.type == "three"){
-					this.shoplist = listData.goodsListthree[oid - 1 ]
-					this.shoptitle = listData.goodtitle[2]
-					this.tabhead = '男装女装'
-				
+					this.shoplist = this.res.goodsListthree[myid - 1 ]
+					
+
 				}
 				if( this.type == "four"){
-					this.shoplist = listData.goodsListfour[oid - 1 ]
-					this.shoptitle = listData.goodtitle[3]
-					this.tabhead = '母婴用品'
-				
+					this.shoplist = this.res.goodsListfour[myid - 1 ]
+					
+					
+
 				}
 			},
 			clickTopUp:function(id){
         this.faceValue = id;
       }
-		}
+		},
+		mounted() {
+			this.getlist();
+			
+		},
+		onPageScroll(e) {
+			//兼容iOS端下拉时顶部漂移
+			this.headerPosition = e.scrollTop>=0?"fixed":"absolute";
+			this.headerTop = e.scrollTop>=0?null:0;
+			this.statusTop = e.scrollTop>=0?null:-this.statusHeight+'px';
+		},
+		onPullDownRefresh() {
+		    setTimeout(()=>{
+				this.reload();
+		        uni.stopPullDownRefresh();
+		    },1000);
+		},
+		onReachBottom() {
+			uni.showToast({ title: '触发上拉加载' });
+			let len = this.shoplist.length;
+			if (len >= 48) {
+				this.loadingText = '到底了';
+				return false;
+			}
+			// 演示,随机加入商品,生成环境请替换为ajax请求
+			let end_goods_id = this.shoplist[len-1].goods_id;
+			for (let i = 1; i <= 12; i++) {
+				let goods_id = end_goods_id + i;
+				let p = {
+					goods_id: goods_id,
+					image: "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1553187020783&di=bac9dd78b36fd984502d404d231011c0&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201609%2F26%2F20160926173213_s5adi.jpeg",
+					image2: "http://pic.rmb.bdstatic.com/819a044daa66718c2c40a48c1ba971e6.jpeg",
+					image3: "http://img001.hc360.cn/y5/M00/1B/45/wKhQUVYFE0uEZ7zVAAAAAMj3H1w418.jpg",
+					title: "古黛妃 短袖t恤女夏装2019新款韩版宽松",
+					price: "179",
+					number: "61"
+				};
+				this.shoplist.push(p);
+			}
+			
+		},
 	}
 </script>
 

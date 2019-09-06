@@ -122,14 +122,14 @@
 		<!-- 底部的功能区 -->
 		<view class="detail-bott">
 			<view class="detail-bott-left">
-				<navigator class="detail-bott-left-a" @click="detailindexclick()" open-type="switchTab">
+				<view class="detail-bott-left-a" @click="detailindexclick()">
 					<image src="../static/images/tab-home.png" mode="" class="detail-left-img"></image>
 					<text class="detail-left-title">首页</text>
-				</navigator>
-				<navigator class="detail-bott-left-a" @click="detailclick()" open-type="switchTab">
+				</view>
+				<view class="detail-bott-left-a" @click="detailclick()">
 					<image src="../static/images/tab-cart.png" mode="" class="detail-left-img"></image>
 					<text class="detail-left-title">购物车</text>
-				</navigator>
+				</view>
 				<view class="detail-bott-left-a">
 					<view class="detail-bott-box">
 						<image src="../static/images/shoucang.png" mode="" class="detail-left-img-l"	@click="ai()" v-show="aione"></image>
@@ -143,7 +143,7 @@
 				<text class="detail-right-ljgm">
 					立即购买
 				</text>
-				<view class="detail-right-jrgwc" @click="add(detail)">
+				<view class="detail-right-jrgwc" @click="addcartlist()">
 					加入购物车
 				</view>
 			</view>
@@ -163,15 +163,26 @@
 				aitwo:false,
 				detail:null,
 				zk:(Math.random(1)).toFixed(2),
-				cartlist:''
+				id:null,
+				oid:null,
+				type:null
 			};
 		},
+		
 		// 从首页或列表页接受到的数据
 		onLoad(option) {
 			
 			const item = JSON.parse(decodeURIComponent(option.data));
 			this.detail = item;
+			
+			this.id = item.id ;
+			this.oid = item.oid ;
+			this.type = item.type ;
+			
+			
+			
 		},
+		
 		methods:{
 			
 			 shoplistclick(){			 				
@@ -185,7 +196,7 @@
 			 },
 			 detailclick(){
 				 uni.switchTab({
-				 			url: '../pages/cart'
+				 			url: '../pages/cart',
 				 });
 			 },
 			 detailindexclick(){
@@ -193,15 +204,15 @@
 				 			url: '../pages/index'
 				 });
 			 },
-			 add(option){
-				
-					let data = JSON.stringify(option)
-					this.cartlist = data ;
-					let mydata = this.cartlist ;
-					console.log(mydata)
-					uni.reLaunch({
-						url:`../pages/cart?data=${encodeURIComponent(mydata)}`,
-					})
+			 addcartlist(){
+				 
+					uni.setStorage({
+							key: 'cart',
+							data: this.detail,
+							success: function () {
+									uni.showToast({title: "已加入购物车"})
+							}
+					});
 			 },
 			ai(){
 				this.aione = false ;
@@ -214,6 +225,9 @@
 			
 		},
 		
+		// mounted() {
+		// 	 this.addcartlist()
+		// }
 	}
 </script>
 <style>
