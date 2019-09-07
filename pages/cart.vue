@@ -22,7 +22,7 @@
 					<image :src="item.image" mode="" class="mycart-list-box-img" @click="tdcart(index,item)"></image>
 					<view class="mycart-list-title">
 						<view @click="tdcart(index,item)">
-							<text class="mycart-list-title-top">{{item.title}}{{item.title}}</text>
+							<text class="mycart-list-title-top" >{{item.title}}{{item.title}}</text>
 							<text class="mycart-list-title-bott">{{item.title}}</text>
 							<text class="mycart-list-title-price">&#165; {{item.price}}</text>
 						</view>
@@ -126,19 +126,31 @@
 		
 			
 		},
-		
+		watch: {
+			cart: {
+					 handler(newName, oldName) {
+							console.log(oldName)
+							console.log(newName)
+					},
+				},
+				deep: true,
+				immediate: true
+		},
 		methods:{
 			getcart(){
 				
 				var that = this
+				
 				uni.getStorage({
 						key: 'cart',
 						success: function (res) {
+							
 							console.log(res.data)
 							if( res.data == ''||typeof res.data == "undefined" || res.data == null ){
 								that.cart = null;
 								uni.showToast({title: "请去添加商品"})
 							}else{
+								that.settle = true ;
 								let p = {
 								"num":"1",
 								"image": res.data.image,
@@ -148,9 +160,8 @@
 								"number":res.data.number,
 								"price":res.data.price,
 								}
-								that.settle = true ;
+
 								that.cart.push(p)
-						
 								
 									
 							}
@@ -159,6 +170,9 @@
 									
 						}
 				});
+				
+
+
 				if( this.cart.length == 0){
 					this.carttitle = true ;
 					this.settle = false ;
@@ -283,10 +297,10 @@
 				return result>0?result :result = 0;
 			}
 		},
+	
 		mounted() {
 			this.getcart()
-			this.imgone()
-		
+	
 		}
 	}
 	

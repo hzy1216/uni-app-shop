@@ -38,13 +38,13 @@
       return {
         address:[],
 				moren:false,
-				
+				addlist:null,
+				type:null,
       }
     },
 		onLoad(option) {
+			console.log(option)
 			
-			let lodata = option.data
-			console.log(option.data)
 			
 		},
 		components:{
@@ -57,6 +57,7 @@
 				})
 			},
 			toadd(type,option){
+				console.log(option)
 				let data = JSON.stringify(option) 
 				uni.navigateTo({
 					url:`../components/add?type=${type}&data=${encodeURIComponent(data)}`,
@@ -69,17 +70,49 @@
 					success: (res) => {
 							if( res.data!= ''){
 							this.address = res.data
+								var that = this ;
 								
+								uni.getStorage({
+									key:'address',
+									success:function(res){
+										console.log(res)
+										that.address[ res.data.id -1 ] = res.data
+									}
+								})
+							
+								uni.getStorage({
+									key:'add',
+									success:function(res){
+										
+										let a = {
+											id:(that.address.length + 1).toString() ,
+											name:res.data.name,
+											number:res.data.number,
+											address:res.data.address,
+											floor:res.data.floor
+										}									
+										that.address.push(a)
+										try {
+												uni.removeStorageSync('add');
+										} catch (e) {
+												// error
+										}
+									}
+								})
+														
 							}else{
 								console.log('数据获取失败')
 							}
 							
 					}
 				});
+				
 			},
+			
 		},
 		mounted() {
 			this.getaddress();
+		
 			
 		}
 	

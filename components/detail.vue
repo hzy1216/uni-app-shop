@@ -197,6 +197,7 @@
 			 detailclick(){
 				 uni.switchTab({
 				 			url: '../pages/cart',
+							
 				 });
 			 },
 			 detailindexclick(){
@@ -205,6 +206,7 @@
 				 });
 			 },
 			 addcartlist(){
+				 
 				 
 					uni.setStorage({
 							key: 'cart',

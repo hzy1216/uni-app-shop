@@ -95,7 +95,7 @@
 						method:'get',
 						success: (res) => {
 								if( res.data != ''){
-									console.log(res.data)
+									
 									this.onefloor = res.data.onefloor;
 									this.twofloor = res.data.twofloor;
 									this.threefloor = res.data.threefloor;

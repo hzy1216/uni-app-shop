@@ -66,7 +66,7 @@ import main from '../main.js'
 				
 			}
 			this.manageType = option.type;
-			
+			console.log(this.manageType)
 		},
 		methods:{
 			backaddress(){
@@ -76,7 +76,7 @@ import main from '../main.js'
 			},
 			confirm(){
 				let option = this.addlist;
-				console.log(option)
+				
 				if(option.name == ''){
 					this.msg='请填写收货人姓名';
 					this.subtitle = true ;
@@ -110,8 +110,36 @@ import main from '../main.js'
 					},1000)
 
 				}
-				let data = JSON.stringify(option) 
-				uni.showToast({title: "已提交"})		
+				if(option.name != '' && option.number !='' && option.address !='' && option.floor !=''){
+				
+					if(this.manageType == 'edit'){
+						uni.setStorage({
+							key:'address',
+							data:option,
+							success() {
+								uni.showToast({title: "已提交"})	
+								
+							}
+						})
+						uni.navigateTo({
+							url:'../components/address'
+						})
+					}
+					if(this.manageType == 'add'){
+						uni.setStorage({
+							key:'add',
+							data:option,
+							success() {
+								uni.showToast({title: "已提交"})	
+								
+							}
+						})
+						uni.navigateTo({
+							url:'../components/address'
+						})
+					}	
+					
+				}
 				
 			}
 			
