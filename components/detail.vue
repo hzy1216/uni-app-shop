@@ -171,13 +171,14 @@
 		
 		// 从首页或列表页接受到的数据
 		onLoad(option) {
-			
+			console.log(option)
+			this.oid = option.oid ;
+			this.type = option.type ;
 			const item = JSON.parse(decodeURIComponent(option.data));
 			this.detail = item;
 			
 			this.id = item.id ;
-			this.oid = item.oid ;
-			this.type = item.type ;
+			
 			
 			
 			
@@ -206,7 +207,8 @@
 				 });
 			 },
 			 addcartlist(){
-				 
+				
+				
 				 
 					uni.setStorage({
 							key: 'cart',

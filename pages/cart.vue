@@ -85,6 +85,7 @@
 				carttitle:false,
 				imageone:false,
 				imagetwo:true,
+				
 			}
 		},
 		// computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
@@ -126,60 +127,61 @@
 		
 			
 		},
-		watch: {
-			cart: {
-					 handler(newName, oldName) {
-							console.log(oldName)
-							console.log(newName)
-					},
-				},
-				deep: true,
-				immediate: true
-		},
 		methods:{
+			
 			getcart(){
 				
 				var that = this
-				
-				uni.getStorage({
-						key: 'cart',
-						success: function (res) {
-							
-							console.log(res.data)
-							if( res.data == ''||typeof res.data == "undefined" || res.data == null ){
-								that.cart = null;
-								uni.showToast({title: "请去添加商品"})
-							}else{
-								that.settle = true ;
-								let p = {
-								"num":"1",
-								"image": res.data.image,
-								"image2":res.data.image2,
-								"image3":res.data.image3,
-								"title":res.data.title,
-								"number":res.data.number,
-								"price":res.data.price,
+				uni.request({
+					url: '../static/data/cart.json', //仅为示例，并非真实接口地址。
+					method:'get',
+					success: (res) => { 
+						console.log(res)
+						that.cart = res.data ;
+						uni.getStorage({
+								key: 'cart',
+								success: function (res) {
+									
+									console.log(res.data)
+									if( res.data == ''||typeof res.data == "undefined" || res.data == null ){
+										that.cart = null;
+										uni.showToast({title: "请去添加商品"})
+									}else{
+										that.settle = true ;
+										let p = {
+										"num":"1",
+										"image": res.data.image,
+										"image2":res.data.image2,
+										"image3":res.data.image3,
+										"title":res.data.title,
+										"number":res.data.number,
+										"price":res.data.price,
+										}
+										that.cart.push(p);
+										
+											if( that.cart.length == 0){
+												that.carttitle = true ;
+												that.settle = false ;
+											}else{
+												that.carttitle = false ;
+												that.settle = true ;
+											}
+										
+										
+											
+									}
+									
+										
+											
 								}
-
-								that.cart.push(p)
-								
-									
-							}
-							
-								
-									
-						}
-				});
+						});
+					}
+				})
+				
 				
 
 
-				if( this.cart.length == 0){
-					this.carttitle = true ;
-					this.settle = false ;
-				}else{
-					this.carttitle = false ;
-					this.settle = true ;
-				}
+				
 				
 				
 			},
@@ -299,6 +301,7 @@
 		},
 	
 		mounted() {
+		
 			this.getcart()
 	
 		}
