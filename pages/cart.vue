@@ -82,7 +82,7 @@
 				},
 				settle:null,
 				yhsum:(Math.random(100)*100).toFixed(2),
-				carttitle:false,
+				carttitle:null,
 				imageone:false,
 				imagetwo:true,
 				
@@ -91,7 +91,13 @@
 		// computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
 		onLoad(option) {
 			
-			
+			// if( this.cart.length == 0){
+			// 	this.carttitle = true ;
+			// 	this.settle = false ;
+			// }else{
+			// 	this.carttitle = false ;
+			// 	this.settle = true ;
+			// }
 			
 			
 			
@@ -132,52 +138,145 @@
 			getcart(){
 				
 				var that = this
+				
 				uni.request({
 					url: '../static/data/cart.json', //仅为示例，并非真实接口地址。
 					method:'get',
 					success: (res) => { 
-						console.log(res)
-						that.cart = res.data ;
-						uni.getStorage({
-								key: 'cart',
-								success: function (res) {
-									
-									console.log(res.data)
-									if( res.data == ''||typeof res.data == "undefined" || res.data == null ){
-										that.cart = null;
-										uni.showToast({title: "请去添加商品"})
+							console.log(res)
+							if( res.data == ''||typeof res.data == "undefined" || res.data == null ){
+								that.cart = null;
+								uni.showToast({title: "请去添加商品"})
+							}else{
+								that.cart = res.data ;
+							}
+							
+							if( that.cart.length == 0){
+								that.carttitle = true ;
+								that.settle = false ;
+							}else{
+								that.carttitle = false ;
+								that.settle = true ;
+							}
+							uni.getStorage({
+								key:'cartlist',
+								success(res) {
+									that.cart = res.data ;
+									if( that.cart.length == 0){
+										that.carttitle = true ;
+										that.settle = false ;
 									}else{
+										that.carttitle = false ;
 										that.settle = true ;
-										let p = {
-										"num":"1",
-										"image": res.data.image,
-										"image2":res.data.image2,
-										"image3":res.data.image3,
-										"title":res.data.title,
-										"number":res.data.number,
-										"price":res.data.price,
-										}
-										that.cart.push(p);
-										
-											if( that.cart.length == 0){
-												that.carttitle = true ;
-												that.settle = false ;
-											}else{
-												that.carttitle = false ;
-												that.settle = true ;
-											}
-										
-										
-											
 									}
-									
+								}
+							})
+							uni.getStorage({
+									key: 'cart',
+									success: function (res) {
+										
+										console.log(res.data)
+										
+											that.settle = true ;
+											let p = {
+											"num":"1",
+											"image": res.data.image,
+											"image2":res.data.image2,
+											"image3":res.data.image3,
+											"title":res.data.title,
+											"number":res.data.number,
+											"price":res.data.price,
+											}
+											that.cart.unshift(p);
+											try {
+													uni.removeStorageSync('cart');
+											} catch (e) {
+													// error
+											}
+											uni.setStorage({
+												key:'cartlist',
+												data:that.cart,
+												
+											})
+										if( that.cart.length == 0){
+											that.carttitle = true ;
+											that.settle = false ;
+										}else{
+											that.carttitle = false ;
+											that.settle = true ;
+										}
+												
+											
+											
+												
+										
 										
 											
-								}
-						});
-					}
+												
+									}
+							});
+						}
 				})
+				if( that.cart.length == 0){
+					that.carttitle = true ;
+					that.settle = false ;
+				}else{
+					that.carttitle = false ;
+					that.settle = true ;
+				}
+						
+					// }
+				// })
 				
+				
+				
+				
+				// uni.request({
+				// 	url: '../static/data/cart.json', //仅为示例，并非真实接口地址。
+				// 	method:'get',
+				// 	success: (res) => { 
+				// 		console.log(res)
+				// 		that.cart = res.data ;
+				// 		uni.getStorage({
+				// 				key: 'cart',
+				// 				success: function (res) {
+				// 					
+				// 					console.log(res.data)
+				// 					if( res.data == ''||typeof res.data == "undefined" || res.data == null ){
+				// 						that.cart = null;
+				// 						uni.showToast({title: "请去添加商品"})
+				// 					}else{
+				// 						that.settle = true ;
+				// 						let p = {
+				// 						"num":"1",
+				// 						"image": res.data.image,
+				// 						"image2":res.data.image2,
+				// 						"image3":res.data.image3,
+				// 						"title":res.data.title,
+				// 						"number":res.data.number,
+				// 						"price":res.data.price,
+				// 						}
+				// 						that.cart.push(p);
+				// 						
+				// 							if( that.cart.length == 0){
+				// 								that.carttitle = true ;
+				// 								that.settle = false ;
+				// 							}else{
+				// 								that.carttitle = false ;
+				// 								that.settle = true ;
+				// 							}
+				// 						
+				// 						
+				// 							
+				// 					}
+				// 					
+				// 						
+				// 							
+				// 				}
+				// 		});
+				// 	}
+				// })
+				// 
 				
 
 
@@ -190,12 +289,11 @@
 					var oimgs = document.querySelectorAll('.mycart-list-xzq-img-l')
 					var timgs = document.querySelectorAll('.mycart-list-xzq-img-t')
 				
-				
 					oimgs[id].style.display = 'none' ;
 					timgs[id].style.display = 'block' ;
 					
 					for( var i = 0 ; i < oimgs.length ; i++){
-						for( var j= 0 ; j< timgs.length ; j ++ ){
+						for( var j= 0 ; j< timgs.length - i ; j ++ ){
 							if(oimgs[i].style.display != 'block' && timgs[j].style.display != 'none'){
 								
 								this.imageone =false ;
@@ -208,9 +306,6 @@
 						}
 						
 					}
-					
-					
-					
 			},
 			imgtwo(oid){
 					

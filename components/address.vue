@@ -71,12 +71,22 @@
 							if( res.data!= ''){
 							this.address = res.data
 								var that = this ;
-								
+								uni.getStorage({
+									key:'addresslist',
+									success(res) {
+										that.address = res.data ;
+									}
+								})
 								uni.getStorage({
 									key:'address',
 									success:function(res){
 										console.log(res)
-										that.address[ res.data.id -1 ] = res.data
+										that.address[ res.data.id -1 ] = res.data ;
+										uni.setStorage({
+											key:'addresslist',
+											data:that.address,
+											
+										})
 									}
 								})
 							
@@ -91,12 +101,17 @@
 											address:res.data.address,
 											floor:res.data.floor
 										}									
-										that.address.push(a)
+										that.address.unshift(a)
 										try {
 												uni.removeStorageSync('add');
 										} catch (e) {
 												// error
 										}
+										uni.setStorage({
+											key:'addresslist',
+											data:that.address,
+											
+										})
 									}
 								})
 														
