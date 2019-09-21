@@ -60,7 +60,7 @@
 					</view>
 				</navigator>
 				
-				<view class="setting-butt" >
+				<view class="setting-butt" @click="touser()">
 					<button  type="default" @tap="bindLogout" class="setting-text">退出登录</button>
 				</view>
 			</scroll-view>
@@ -106,6 +106,11 @@
 									url: '../pages/user',
 							});
 					}
+			},
+			touser(){
+				uni.switchTab({
+					url:'../pages/user'
+				})
 			},
 			shopsettingclick(){
 				uni.switchTab({

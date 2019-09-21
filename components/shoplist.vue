@@ -87,7 +87,43 @@
 				loadingText: '正在加载...'
 			}
 		},
-		
+		onShow(){
+			uni.request({
+				url: '../static/data/goodsList.json', //仅为示例，并非真实接口地址。
+				method:'get',
+				success: (res) => { 
+					this.res = res.data ;
+					if( res.data != ''){
+						if( this.type == "one"){
+							this.shoplist = res.data.goodsListone[this.oid - 1 ]
+							this.shoptitle = res.data.goodtitle[0] 
+							this.tabhead = '手机通讯'
+							 
+						}
+						if( this.type == "two"){
+							this.shoplist = res.data.goodsListtwo[this.oid - 1 ]
+							this.shoptitle =res.data.goodtitle[1]
+							this.tabhead = '礼品鲜花'
+						
+						}
+						if( this.type == "three"){
+							this.shoplist = res.data.goodsListthree[this.oid - 1 ]
+							this.shoptitle = res.data.goodtitle[2]
+							this.tabhead = '男装女装'
+						
+						}
+						if( this.type == "four"){
+							this.shoplist = res.data.goodsListfour[this.oid - 1 ]
+							this.shoptitle =res.data.goodtitle[3]
+							this.tabhead = '母婴用品'
+						
+						}
+					}else{
+						console.log('数据获取失败')
+					}
+				}
+			});
+		},
 		onLoad(option) {
 			console.log(option)
 			this.oid = decodeURIComponent(option.id)
@@ -100,41 +136,7 @@
 		},
 		methods:{
 			getlist(){
-				uni.request({
-					url: '../static/data/goodsList.json', //仅为示例，并非真实接口地址。
-					method:'get',
-					success: (res) => { 
-						this.res = res.data ;
-						if( res.data != ''){
-							if( this.type == "one"){
-								this.shoplist = res.data.goodsListone[this.oid - 1 ]
-								this.shoptitle = res.data.goodtitle[0] 
-								this.tabhead = '手机通讯'
-								 
-							}
-							if( this.type == "two"){
-								this.shoplist = res.data.goodsListtwo[this.oid - 1 ]
-								this.shoptitle =res.data.goodtitle[1]
-								this.tabhead = '礼品鲜花'
-							
-							}
-							if( this.type == "three"){
-								this.shoplist = res.data.goodsListthree[this.oid - 1 ]
-								this.shoptitle = res.data.goodtitle[2]
-								this.tabhead = '男装女装'
-							
-							}
-							if( this.type == "four"){
-								this.shoplist = res.data.goodsListfour[this.oid - 1 ]
-								this.shoptitle =res.data.goodtitle[3]
-								this.tabhead = '母婴用品'
-							
-							}
-						}else{
-							console.log('数据获取失败')
-						}
-					}
-				});
+				
 			},
 			 shoplistclick(){			 				
 						uni.switchTab({
@@ -185,7 +187,7 @@
 			},
 			clickTopUp:function(id){
         this.faceValue = id;
-      }
+				}
 		},
 		mounted() {
 			this.getlist();

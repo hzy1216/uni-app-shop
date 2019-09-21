@@ -187,6 +187,21 @@
 		                        });
 		                    }
 		                }
+										if (res.cancel) {
+										/**
+										 * 如果需要强制登录，使用reLaunch方式
+										 */
+												if (this.forcedLogin) {
+														uni.reLaunch({
+																url: '../pages/login'
+														});
+												} else {
+														uni.navigateTo({
+																url: '../pages/login'
+														});
+												}
+										}
+										
 		            }
 		        });
 		    }

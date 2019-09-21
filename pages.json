@@ -12,38 +12,50 @@
 			,{
 				    "path" : "pages/classify",
 				    "style" : {
-							"navigationBarTitleText": "分类"
+							"navigationBarTitleText": "分类",
+							"enablePullDownRefresh": true,
+							"onReachBottomDistance":12
 						}
 				}
 				,{
 				    "path" : "pages/cart",
 				    "style" : {
-							"navigationBarTitleText": "购物车"
+							"navigationBarTitleText": "购物车",
+							"enablePullDownRefresh": true,
+							"onReachBottomDistance":12
 						}
 				}
 				,{
 				    "path" : "pages/user",
 				    "style" : {
-							"navigationBarTitleText": "个人中心"
+							"navigationBarTitleText": "个人中心",
+							"enablePullDownRefresh": true,
+							"onReachBottomDistance":12
 						}
 				},
 				{
 				    "path" : "pages/shopsetting",
 				    "style" : {
-							"navigationBarTitleText": "设置"
+							"navigationBarTitleText": "设置",
+							"enablePullDownRefresh": true,
+							"onReachBottomDistance":12
 						}
 				},
 				{
 				    "path" : "components/detail",
 				    "style" : {
-							"navigationBarTitleText": "商品详情"
+							"navigationBarTitleText": "商品详情",
+							"enablePullDownRefresh": true,
+							"onReachBottomDistance":12
 						}
 				},
 				
 				{
 				    "path" : "components/address",
 				    "style" : {
-							"navigationBarTitleText": "收货地址"
+							"navigationBarTitleText": "收货地址",
+							"enablePullDownRefresh": true,
+							"onReachBottomDistance":12
 						}
 				},
 				
@@ -51,26 +63,34 @@
 				{
 				    "path" : "components/add",
 				    "style" : {
-							"navigationBarTitleText": "修改收货地址"
+							"navigationBarTitleText": "修改收货地址",
+							"enablePullDownRefresh": true,
+							"onReachBottomDistance":12
 						}
 				},
 				
 				{
 				    "path" : "components/mymap",
 				    "style" : {
-							"navigationBarTitleText": "选择位置"
+							"navigationBarTitleText": "选择位置",
+							"enablePullDownRefresh": true,
+							"onReachBottomDistance":12
 						}
 				},
 				{
 				    "path" : "pages/login",
 				    "style" : {
-							"navigationBarTitleText": "登录"
+							"navigationBarTitleText": "登录",
+							"enablePullDownRefresh": true,
+							"onReachBottomDistance":12
 						}
 				},
 				{
 				    "path" : "pages/register",
 				    "style" : {
-							"navigationBarTitleText": "注册"
+							"navigationBarTitleText": "注册",
+							"enablePullDownRefresh": true,
+							"onReachBottomDistance":12
 						}
 				},
 				{
@@ -82,6 +102,7 @@
 						}
 				}
 				
+        
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

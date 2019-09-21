@@ -7,7 +7,7 @@
 			<text class="setting-top-title" style="margin-right:40%;">购物车</text>
 		</view>
 		
-		<scroll-view scroll-y class="mycart" >
+		<scroll-view scroll-y class="mycart">
 			<view class="cart-title" v-show="carttitle" >
 				<text class="cart-title-l">空空如也</text>
 				<navigator url="classify" open-type="switchTab" class="cart-title-url">去添加</navigator>
@@ -39,7 +39,8 @@
 					</view>
 				</view>
 				<view class="mycart-list-xx-box" @click="del(index)">
-					<image src="../static/images/cc.png" mode="" class="mycart-list-xx"></image>
+					<!-- <image src="../static/images/cc.png" mode="" class="mycart-list-xx"></image> -->
+					<img src="../static/images/cc.png"  class="mycart-list-xx">
 				</view>
 						
 			</view>	
@@ -53,12 +54,14 @@
 				<image src="../static/images/select.png" mode="" class="sett-list-xzq-img" @click="imglist()" v-show="imageone"></image>
 				<image src="../static/images/selected.png" mode="" class="sett-list-xzq-img" @click="imglst()" v-show="imagetwo"></image>
 			</view>
-			<view class="settle-bott">
+			
+			<view class="settle-bott" >
+				
 				<view class="settle-box">
 					<text class="settle-bott-title">&#165; {{(getsum).toFixed(2)}}</text>
 					<text class="settle-bott-title">已优惠 {{yhsum}}</text>
 				</view>			
-				<navigator url="" class="settle-a">去结算</navigator>
+				<view class="settle-a" @click="topay()">去结算</view>
 			</view>
 		</view>
 	
@@ -66,9 +69,9 @@
 </template>
 
 <script>
-	// import {
-	//     mapState
-	// } from 'vuex'
+	import {
+	    mapState
+	} from 'vuex'
 	
 	export default{
 		
@@ -80,89 +83,40 @@
 				cartlist:{
 					
 				},
-				settle:null,
+			
 				yhsum:(Math.random(100)*100).toFixed(2),
 				carttitle:null,
 				imageone:false,
 				imagetwo:true,
-				
+				settle:null
 			}
 		},
-		// computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
-		onLoad(option) {
-			
-			// if( this.cart.length == 0){
-			// 	this.carttitle = true ;
-			// 	this.settle = false ;
-			// }else{
-			// 	this.carttitle = false ;
-			// 	this.settle = true ;
-			// }
-			
-			
-			
-			
-			
-			// if (!this.hasLogin) {
-			//     uni.showModal({
-			//         title: '未登录',
-			//         content: '您未登录，需要登录后才能继续',
-			//         /**
-			//          * 如果需要强制登录，不显示取消按钮
-			//          */
-			//         showCancel: !this.forcedLogin,
-			//         success: (res) => {
-			//             if (res.confirm) {
-			// 	/**
-			// 	 * 如果需要强制登录，使用reLaunch方式
-			// 	 */
-			//                 if (this.forcedLogin) {
-			//                     uni.reLaunch({
-			//                         url: '../pages/login'
-			//                     });
-			//                 } else {
-			//                     uni.navigateTo({
-			//                         url: '../pages/login'
-			//                     });
-			//                 }
-			//             }
-			//         }
-			//     });
-			// }
-			// 控制有无数据时出现提示语
-		
+		computed: mapState(['forcedLogin', 'hasLogin', 'userName']),
+		onLoad() {
 			
 		},
-		methods:{
-			
-			getcart(){
+		onShow() {
+			var that = this
+			if(this.hasLogin == false && that.cart.length == 0){
 				
-				var that = this
+					that.carttitle = true ;
+					that.settle = false ;
+					
+				
+			}else{
 				
 				uni.request({
-					url: '../static/data/cart.json', //仅为示例，并非真实接口地址。
-					method:'get',
-					success: (res) => { 
-							console.log(res)
-							if( res.data == ''||typeof res.data == "undefined" || res.data == null ){
-								that.cart = null;
-								uni.showToast({title: "请去添加商品"})
-							}else{
-								that.cart = res.data ;
-							}
+						url: '../static/data/cart.json', //仅为示例，并非真实接口地址。
+						method:'get',
+						success: (res) => { 
 							
-							if( that.cart.length == 0){
-								that.carttitle = true ;
-								that.settle = false ;
-							}else{
-								that.carttitle = false ;
-								that.settle = true ;
-							}
+							that.cart = res.data;
+							
 							uni.getStorage({
 								key:'cartlist',
 								success(res) {
 									that.cart = res.data ;
-									if( that.cart.length == 0){
+									if(that.cart.length == 0){
 										that.carttitle = true ;
 										that.settle = false ;
 									}else{
@@ -175,7 +129,7 @@
 									key: 'cart',
 									success: function (res) {
 										
-										console.log(res.data)
+										
 										
 											that.settle = true ;
 											let p = {
@@ -188,6 +142,20 @@
 											"price":res.data.price,
 											}
 											that.cart.unshift(p);
+										
+											that.cart = removeRepeatArrObj (that.cart)
+											function removeRepeatArrObj (arr) {
+											  // 创建一个临时变量进行记忆
+											  var hash = {}
+											  arr = arr.reduce(function (total, item) {
+											    // 相同则添加一个空的，不同则push进 累加的数组  --指定id属性
+													
+											    hash[item.title] = hash[item.title] ? '': true && total.push(item)
+											    return total
+											  }, [])
+											  return arr
+											}		
+											
 											try {
 													uni.removeStorageSync('cart');
 											} catch (e) {
@@ -198,93 +166,54 @@
 												data:that.cart,
 												
 											})
-										if( that.cart.length == 0){
-											that.carttitle = true ;
-											that.settle = false ;
-										}else{
-											that.carttitle = false ;
-											that.settle = true ;
-										}
+											if(  that.cart.length == 0){
+												that.carttitle = true ;
+												that.settle = false ;
 												
-											
-											
-												
-										
-										
-											
-												
+											}else{
+												that.carttitle = false ;
+												that.settle = true ;
+											}																				
 									}
 							});
+							if( that.cart.length == 0){
+								that.carttitle = true ;
+								that.settle = false ;
+								
+							}else{
+								that.carttitle = false ;
+								that.settle = true ;
+							}		
 						}
-				})
-				if( that.cart.length == 0){
-					that.carttitle = true ;
-					that.settle = false ;
-				}else{
-					that.carttitle = false ;
-					that.settle = true ;
-				}
-						
-					// }
-				// })
-				
-				
-				
-				
-				// uni.request({
-				// 	url: '../static/data/cart.json', //仅为示例，并非真实接口地址。
-				// 	method:'get',
-				// 	success: (res) => { 
-				// 		console.log(res)
-				// 		that.cart = res.data ;
-				// 		uni.getStorage({
-				// 				key: 'cart',
-				// 				success: function (res) {
-				// 					
-				// 					console.log(res.data)
-				// 					if( res.data == ''||typeof res.data == "undefined" || res.data == null ){
-				// 						that.cart = null;
-				// 						uni.showToast({title: "请去添加商品"})
-				// 					}else{
-				// 						that.settle = true ;
-				// 						let p = {
-				// 						"num":"1",
-				// 						"image": res.data.image,
-				// 						"image2":res.data.image2,
-				// 						"image3":res.data.image3,
-				// 						"title":res.data.title,
-				// 						"number":res.data.number,
-				// 						"price":res.data.price,
-				// 						}
-				// 						that.cart.push(p);
-				// 						
-				// 							if( that.cart.length == 0){
-				// 								that.carttitle = true ;
-				// 								that.settle = false ;
-				// 							}else{
-				// 								that.carttitle = false ;
-				// 								that.settle = true ;
-				// 							}
-				// 						
-				// 						
-				// 							
-				// 					}
-				// 					
-				// 						
-				// 							
-				// 				}
-				// 		});
-				// 	}
-				// })
-				// 
-				
-
-
-				
-				
-				
-			},
+				})			
+			}
 			
+			
+			
+			
+		},
+		methods:{
+			topay(){
+				uni.showModal({
+				      title: '支付中',
+				      content: '请确定购买吗？',
+				    
+				  
+				      success: (res) => {
+								if(res.confirm){
+									uni.showToast({
+										title:'前往付款页面'
+									})
+								}else{
+									uni.switchTab({
+										url:'/pages/cart'
+									})
+								}
+				          
+				      }
+							
+				  });
+			},
 			imgone(id){
 					var oimgs = document.querySelectorAll('.mycart-list-xzq-img-l')
 					var timgs = document.querySelectorAll('.mycart-list-xzq-img-t')
@@ -371,7 +300,25 @@
 				}
 			},
 			del(index){
+				var that = this ;
 				this.cart.splice(index,1)
+				uni.setStorage({
+					key:'cartlist',
+					data:that.cart,
+					
+				})
+				
+				
+				if( this.cart.length == 0){
+					this.carttitle = true ;
+					this.settle = false ;
+					
+				}else{
+					this.carttitle = false ;
+					this.settle = true ;
+				}		
+				
+				
 			},
 			tdcart(id,option){
 				let data = JSON.stringify(option) 
@@ -392,14 +339,12 @@
 					
 				});
 				return result>0?result :result = 0;
-			}
+			},
+			
+			
 		},
-	
-		mounted() {
 		
-			this.getcart()
-	
-		}
+			
 	}
 	
 </script>

@@ -171,7 +171,7 @@
 		
 		// 从首页或列表页接受到的数据
 		onLoad(option) {
-			console.log(option)
+		
 			this.oid = option.oid ;
 			this.type = option.type ;
 			const item = JSON.parse(decodeURIComponent(option.data));
